@@ -1,0 +1,76 @@
+<body>
+  <div class="card">
+    <h3 class="card-title">Login</h3>
+    <form [formGroup]="formulario" class="needs-validation">
+      <div class="mb-3">
+        <label for="mail">E-mail</label>
+        <input
+          type="email"
+          id="mail"
+          class="form-control"
+          formControlName="mail"
+          placeholder="Ingrese su correo electrónico"
+        />
+
+        @if (mail?.errors !== null && mail?.touched) {
+        <div class="text-danger">
+          @if (mail?.errors?.['required']) {
+          <p>El mail es requerido</p>
+          } @if (mail?.errors?.['minlength']) {
+          <p>
+            El mail requiere al menos
+            {{ mail?.errors?.['minlength']?.requiredLength }} caracteres
+          </p>
+          } @if (mail?.errors?.['maxlength']) {
+          <p>
+            El mail debe tener como máximo
+            {{ mail?.errors?.['maxlength']?.requiredLength }} caracteres
+          </p>
+          } @if (mail?.errors?.['email']) {
+          <p>El mail debe tener formato válido</p>
+          }
+        </div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          formControlName="password"
+          placeholder="Ingrese su contraseña"
+        />
+
+        @if (password?.errors !== null && password?.touched) {
+        <div class="text-danger">
+          @if (password?.errors?.['required']) {
+          <p>El password es requerido</p>
+          } @if (password?.errors?.['minlength']) {
+          <p>
+            El password requiere al menos
+            {{ password?.errors?.['minlength']?.requiredLength }} caracteres
+          </p>
+          } @if (password?.errors?.['maxlength']) {
+          <p>
+            El password debe tener como máximo
+            {{ password?.errors?.['maxlength']?.requiredLength }} caracteres
+          </p>
+          }
+        </div>
+        }
+      </div>
+
+      <button (click)="iniciarSesion()" [disabled]="!formulario.valid">
+        Iniciar Sesión
+      </button>
+
+      @if (mensajeError() == "AuthApiError: Invalid login credentials") {
+      <p class="text-danger">
+        Email o password incorrectos, por favor intente de nuevo
+      </p>
+      }
+    </form>
+  </div>
+</body>
