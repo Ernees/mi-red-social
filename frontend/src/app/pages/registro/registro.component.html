@@ -19,7 +19,7 @@
       <div class="about-left">
         <div class="about-left-content">
           <form [formGroup]="formulario" class="needs-validation">
-            <div class="mb-3 about-para">
+            <!-- <div class="mb-3 about-para">
               <label for="nombre">Nombre</label>
               <input
                 type="text"
@@ -152,8 +152,27 @@
                 }
               </div>
               }
-            </div>
+            </div> -->
+            <div class="mb-3 about-para">
+              <label for="foto">Foto de perfil</label><br />
+              <input
+                type="file"
+                id="foto"
+                formControlName="foto"
+                (change)="cargaDeImagen($event)"
+                accept="images/*"
+              />
 
+              @if (foto?.errors && foto?.touched) {
+              <div class="text-danger mt-1">
+                @if (foto?.errors?.['required']) {
+                <p>La foto es requerida</p>
+                }
+              </div>
+              }
+              <button (click)="registrarse()">Subir foto</button>
+            </div>
+            <!-- 
             <div class="about-btns">
               <button
                 type="button"
@@ -162,8 +181,8 @@
                 class="btn btn-pink"
               >
                 Registrarme
-              </button>
-            </div>
+              </button> -->
+            <!-- </div> -->
           </form>
         </div>
       </div>

@@ -29,11 +29,20 @@ export class UsuariosService {
   }
 
   //------------------------------------------------------------------------------
+  async findAll(): Promise<Partial<Usuario>[]> {
+    // Puedes usar Partial<Usuario> si solo devuelves algunos campos
+    // La proyección es un objeto donde la clave es el campo y el valor 1 significa incluirlo.
+    // El _id se incluye por defecto, si no lo quieres, pon _id: 0
+    return this.usuarioModel.find({}, { nombre: 1, apellido: 1 }).exec();
+    // O si quieres excluir el password por seguridad (muy recomendable)
+    // return this.usuarioModel.find({}, { password: 0 }).exec();
+  }
+  //------------------------------------------------------------------------------
 
   async buscarPorEmail(email: string): Promise<Usuario | null> {
-    console.log('USUARIOS SERVICE: Buscando usuario con email:', email); // ¿Qué email está llegando aquí?
+    console.log('USUARIOS SERVICE: Buscando usuario con email:', email);
     const userFound = await this.usuarioModel.findOne({ email }).lean().exec();
-    console.log('USUARIOS SERVICE: Resultado de findOne:', userFound); // ¿Qué devuelve la consulta?
+    console.log('USUARIOS SERVICE: Resultado de findOne:', userFound);
     return userFound;
   }
 }

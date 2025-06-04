@@ -10,4 +10,5 @@ export class CreateUsuarioDto {
 
   @IsNotEmpty()
   password: string;
+  foto?: string;
 }

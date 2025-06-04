@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'frontend';
+  apiService = inject(ApiService);
+  archivo?: File;
+  ngOnInit() {
+    this.apiService.traer();
+    // this.apiService.traerPorId(99);
+    // this.apiService.modificarPorId(100);
+  }
 }
