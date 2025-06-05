@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { HydratedDocument, ObjectId } from 'mongoose';
 
 export type UsuarioDocument = HydratedDocument<Usuario>;
@@ -11,15 +10,27 @@ export class Usuario {
   _id?: ObjectId;
 
   @Prop({ required: true })
-  @IsNotEmpty()
   nombre: string;
 
   @Prop({ required: true, unique: true })
-  @IsEmail()
   email: string;
 
   @Prop({ required: true })
-  @MinLength(8)
   password: string;
+
+  @Prop({ required: true })
+  apellido: string;
+
+  @Prop({ required: true, unique: true })
+  nombreUsuario: string;
+
+  @Prop({ required: true })
+  fNac: string;
+
+  @Prop({ required: true })
+  descripcion?: string;
+
+  @Prop({ required: true })
+  foto?: string;
 }
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

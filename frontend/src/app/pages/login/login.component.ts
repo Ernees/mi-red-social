@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import {
 })
 export class LoginComponent {
   formulario: FormGroup;
+  apiService = inject(ApiService);
   mensajeError = signal('');
   constructor() {
     this.formulario = new FormGroup({
@@ -38,19 +40,13 @@ export class LoginComponent {
 
   async iniciarSesion() {
     if (!this.formulario.valid) return;
-
-    const mail = this.formulario.value.mail;
-    const password = this.formulario.value.password;
-    // const { data, error } = await this.authService.iniciarSesion(mail, password);
-    // console.log("entre a iniciar sesiion", data, "error: ", error);
-    // if (error) {
-    //   this.mensajeError.set(String(error));
-    // } else {
-    //   console.log('Usuario guardado:', data);
-    //   this.mensajeError.set("");
-    //   this.formulario.reset();
-    // }
-    // this.authService.router.navigateByUrl("/bienvenida");
+    const datos = this.formulario.value;
+    console.log(datos.mail);
+    console.log(datos.password);
+    this.apiService.iniciarSesion({
+      mail: datos.mail,
+      password: datos.password,
+    });
   }
 
   get mail() {

@@ -9,9 +9,9 @@ export class ApiService {
   constructor(private httpClient: HttpClient) {}
 
   // POST a usuarios/
-  crear(formData: FormData) {
+  crear(dataRegistro: FormData) {
     this.httpClient
-      .post(environment.api_url + 'autenticacion/registro', formData) //DUDA!
+      .post(environment.api_url + 'autenticacion/registro', dataRegistro) //DUDA!
       .subscribe((data) => {
         console.log(data);
       });
@@ -22,6 +22,16 @@ export class ApiService {
     this.httpClient.get(environment.api_url + 'usuarios').subscribe((datos) => {
       console.log(datos);
     });
+  }
+
+  iniciarSesion(dataInicioSesion: { mail: string; password: string }) {
+    console.log(`${dataInicioSesion.mail} y ${dataInicioSesion.password}`);
+
+    this.httpClient
+      .post(environment.api_url + 'autenticacion/login', dataInicioSesion)
+      .subscribe((datos) => {
+        console.log(datos);
+      });
   }
 
   traerPorId(id: number) {

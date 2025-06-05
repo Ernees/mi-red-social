@@ -18,6 +18,7 @@ export class AutenticacionService {
     if (usuarioExistente) {
       throw new BadRequestException('El email ya está registrado');
     }
+
     return this.usuariosService.crear(dto);
   }
   //va aca el tema de la foto?

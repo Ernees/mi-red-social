@@ -11,7 +11,6 @@ import { ApiService } from './services/api.service';
 export class AppComponent {
   title = 'frontend';
   apiService = inject(ApiService);
-  archivo?: File;
   ngOnInit() {
     this.apiService.traer();
     // this.apiService.traerPorId(99);

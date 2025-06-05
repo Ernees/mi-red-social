@@ -34,7 +34,7 @@ export class UsuariosService {
     // La proyección es un objeto donde la clave es el campo y el valor 1 significa incluirlo.
     // El _id se incluye por defecto, si no lo quieres, pon _id: 0
     return this.usuarioModel.find({}, { nombre: 1, apellido: 1 }).exec();
-    // O si quieres excluir el password por seguridad (muy recomendable)
+    // para sacar el password por seguridad
     // return this.usuarioModel.find({}, { password: 0 }).exec();
   }
   //------------------------------------------------------------------------------
