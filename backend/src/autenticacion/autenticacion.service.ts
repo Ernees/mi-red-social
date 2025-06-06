@@ -21,7 +21,7 @@ export class AutenticacionService {
 
     return this.usuariosService.crear(dto);
   }
-  //va aca el tema de la foto?
+
   async login(email: string, password: string): Promise<any> {
     //cambiar el any
     const user = await this.usuariosService.buscarPorEmail(email);

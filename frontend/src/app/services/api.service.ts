@@ -11,7 +11,7 @@ export class ApiService {
   // POST a usuarios/
   crear(dataRegistro: FormData) {
     this.httpClient
-      .post(environment.api_url + 'autenticacion/registro', dataRegistro) //DUDA!
+      .post(environment.api_url + 'autenticacion/registro', dataRegistro)
       .subscribe((data) => {
         console.log(data);
       });
