@@ -21,7 +21,8 @@ export class UsuariosService {
 
     const usuarioConPasswordHasheado = {
       ...crearUsuarioDto,
-      password: hash, //agregar admin/user
+      password: hash,
+      perfil: 'usuario',
     };
 
     const usuario = new this.usuarioModel(usuarioConPasswordHasheado);
