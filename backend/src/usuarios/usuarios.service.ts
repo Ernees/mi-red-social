@@ -41,9 +41,7 @@ export class UsuariosService {
   //------------------------------------------------------------------------------
 
   async buscarPorEmail(email: string): Promise<Usuario | null> {
-    console.log('USUARIOS SERVICE: Buscando usuario con email:', email);
     const userFound = await this.usuarioModel.findOne({ email }).lean().exec();
-    console.log('USUARIOS SERVICE: Resultado de findOne:', userFound);
     return userFound;
   }
 }

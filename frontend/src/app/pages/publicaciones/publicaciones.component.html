@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>publicaciones | About Me Profile Card</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="publicaciones.component.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <!-- listar las publicaciones con @for del array de publicaciones que me devuelve el service -->
+
+  <!-- boton que me lleva a crear publicacion -->
+  <body>
+    <div class="mb-3">
+      <label for="titulo">Titulo</label>
+      <input
+        type="text"
+        id="titulo"
+        class="form-control"
+        formControlName="titulo"
+        placeholder="Ingrese el titulo"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="descripcion">descripcion</label>
+      <input
+        type="text"
+        id="descripcion"
+        class="form-control"
+        formControlName="descripcion"
+        placeholder="Ingrese su descripcion"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="foto">Ingrese post</label><br />
+      <input
+        type="file"
+        id="foto"
+        class="form-control"
+        formControlName="foto"
+        (change)="cargaDeImagen($event)"
+        accept="image/*"
+      />
+    </div>
+  </body>
+</html>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   BadRequestException,
@@ -6,10 +7,14 @@ import {
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AutenticacionService {
-  constructor(private usuariosService: UsuariosService) {}
+  constructor(
+    private usuariosService: UsuariosService,
+    private jwtService: JwtService,
+  ) {}
 
   async registrar(dto: CreateUsuarioDto) {
     const usuarioExistente = await this.usuariosService.buscarPorEmail(
@@ -19,16 +24,25 @@ export class AutenticacionService {
       throw new BadRequestException('El email ya está registrado');
     }
 
-    return this.usuariosService.crear(dto);
+    const user = await this.usuariosService.crear(dto);
+    const payload = {
+      sub: user._id,
+      username: user.nombreUsuario,
+      perfil: user.perfil,
+    };
+    const token = await this.jwtService.signAsync(payload);
+    return { user, token };
   }
 
-  async login(email: string, password: string): Promise<any> {
-    //cambiar el any
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ access_token: string }> {
     const user = await this.usuariosService.buscarPorEmail(email);
 
     if (!user) {
       console.log('No hay usuario con ese nombre');
-      throw new UnauthorizedException('Usuario no encontrado'); // esta linea hace que se asegure que el user no va a ser null en lo que sigue del flujo del metodo
+      throw new UnauthorizedException('Usuario no encontrado');
     }
 
     if (!user.password) {
@@ -40,8 +54,14 @@ export class AutenticacionService {
       throw new UnauthorizedException(`Contraseña incorrecta`);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _, ...userSinPassword } = user;
-    return userSinPassword;
+    const payload = {
+      sub: user._id,
+      username: user.nombreUsuario,
+      perfil: user.perfil,
+    };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      //agregar user? como en registro
+    };
   }
 }

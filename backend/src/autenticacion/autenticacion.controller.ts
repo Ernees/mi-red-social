@@ -31,7 +31,7 @@ export class AutenticacionController {
       }),
     }),
   )
-  create(
+  async create(
     @UploadedFile(
       new ParseFilePipe({
         fileIsRequired: true,
@@ -47,7 +47,8 @@ export class AutenticacionController {
       foto: foto.filename,
     };
 
-    return this.authService.registrar(dtoConFoto);
+    const { user, token } = await this.authService.registrar(dtoConFoto);
+    return { access_token: token, user };
   }
 
   @Post('login')

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Get,
@@ -12,23 +14,22 @@ import {
   HttpStatus,
   MaxFileSizeValidator,
   Query,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
 import { diskStorage } from 'multer';
+import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
 // import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
 
 @Controller('publicaciones')
 export class PublicacionesController {
   constructor(private readonly publicacionesService: PublicacionesService) {}
 
-  //Agregar el @req id enlos parametros
-  @Post()
-  crear(@Body() dto: CreatePublicacioneDto) {
-    return this.publicacionesService.create(dto);
-  }
-  @Post()
+  @UseGuards(AuthGuard)
+  @Post('alta')
   @UseInterceptors(
     FileInterceptor('imagen', {
       storage: diskStorage({
@@ -52,24 +53,32 @@ export class PublicacionesController {
     )
     imagen: Express.Multer.File,
     @Body() createPublicacionDto: CreatePublicacioneDto,
-    //aca iria el @req que me trae los datos del jwt @Req() req: Request,
+    @Req() req,
   ) {
-    //aca extraigo los datos  const usuario = req.user as { id: string; rol: string };
+    const usuario = req['usuario'];
+    const usuarioId = usuario.sub;
+
     const dtoConImagen: CreatePublicacioneDto = {
       ...createPublicacionDto,
       imagen: imagen.filename,
-      //usuarioId: usuario.id, // lo agrego aca no lo traigo desde el frontend
+      usuarioId,
     };
+
     return await this.publicacionesService.create(dtoConImagen);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async findAll(
     @Query('orden') orden: 'fecha' | 'likes' = 'fecha',
-    @Query('usuarioId') usuarioId?: string,
     @Query('offset') offset = '0',
     @Query('limit') limit = '10',
+    @Req() req,
   ) {
+    const usuario = req['usuario'];
+    const usuarioId =
+      req.query.filtrarPorUsuario === 'true' ? usuario.sub : undefined;
+
     return this.publicacionesService.findAll({
       orden,
       usuarioId,
@@ -83,31 +92,34 @@ export class PublicacionesController {
     return this.publicacionesService.findOne(+id);
   }
 
-  //lo mismo, cuando tenga el token no voy a recibir el id del usuairo sino qu elo voy a extraer del token
+  @UseGuards(AuthGuard)
   @Post(':id/like')
-  async likePublicacion(
-    @Param('id') publicacionId: string,
-    @Body('usuarioId') usuarioId: string,
-  ) {
+  async likePublicacion(@Param('id') publicacionId: string, @Req() req) {
+    const usuario = req['usuario']; // payload del token que el guard guardo
+    const usuarioId = usuario.sub;
+
     return this.publicacionesService.darLike(publicacionId, usuarioId);
   }
+
+  @UseGuards(AuthGuard)
   @Delete(':id/like')
-  async quitarLike(
-    @Param('id') publicacionId: string,
-    @Body('usuarioId') usuarioId: string,
-  ) {
+  async quitarLike(@Param('id') publicacionId: string, @Req() req) {
+    const usuario = req['usuario'];
+    const usuarioId = usuario.sub;
+
     return this.publicacionesService.quitarLike(publicacionId, usuarioId);
   }
 
   //Aca voy a usar un guard() jwtAuthGuard y ademas del @Param
   //se recibe por parametro el req con le token para validar que sea o el propietario o admin
   //y desde el token se va a acceder a el id y al rol
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(
-    @Param('id') idPublicacion: string,
-    idUsuario: string,
-    esAdmin: boolean,
-  ) {
+  remove(@Param('id') idPublicacion: string, @Req() req) {
+    const usuario = req['usuario'];
+    const idUsuario = usuario.sub;
+    const esAdmin = usuario.rol === 'admin';
+
     return this.publicacionesService.remove(idPublicacion, idUsuario, esAdmin);
   }
 }

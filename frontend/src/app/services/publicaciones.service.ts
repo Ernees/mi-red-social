@@ -7,19 +7,29 @@ import { Injectable } from '@angular/core';
 })
 export class PublicacionesService {
   constructor(private http: HttpClient) {}
-  getPublicaciones(orden: 'fecha' | 'likes', pagina: number, limite: number) {
-    const params = new HttpParams()
+
+  crearPubli(dataRegistro: FormData) {
+    this.http
+      .post(environment.api_url + 'publicaciones/alta', dataRegistro)
+      .subscribe((data) => {
+        console.log(data);
+      });
+  }
+  obtenerPublicaciones(
+    orden: 'fecha' | 'likes',
+    offset: number,
+    limit: number,
+    usuarioId?: string
+  ) {
+    let params = new HttpParams()
       .set('orden', orden)
-      .set('pagina', pagina)
-      .set('limite', limite);
-    return this.http.get(`${environment.api_url}`, { params });
-  }
+      .set('offset', offset.toString())
+      .set('limit', limit.toString());
 
-  darLike(id: number) {
-    return this.http.post(`${environment.api_url}/${id}/like`, {});
-  }
+    if (usuarioId) {
+      params = params.set('usuarioId', usuarioId);
+    }
 
-  quitarLike(id: number) {
-    return this.http.delete(`${environment.api_url}/${id}/like`);
+    return this.http.get(environment.api_url, { params });
   }
 }

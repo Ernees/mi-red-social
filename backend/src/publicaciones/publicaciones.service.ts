@@ -94,7 +94,7 @@ export class PublicacionesService {
 
     if (!esPropietario && !esAdmin) {
       throw new ForbiddenException(
-        'No tienes permiso para eliminar esta publicación',
+        'No tenes permiso para eliminar esta publicación',
       );
     }
 
@@ -102,7 +102,6 @@ export class PublicacionesService {
     return await publicacion.save(); // baja logica
   }
 
-  //
   async darLike(publicacionId: string, usuarioId: string): Promise<string> {
     const publicacion = await this.publicacionModel.findById(publicacionId);
 
