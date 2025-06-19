@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { UsuariosService } from './usuarios.service';
-import { Get, Controller } from '@nestjs/common';
+import { Get, Controller, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -9,19 +14,16 @@ export class UsuariosController {
   findAll() {
     return this.usuariosService.findAll();
   }
+  @UseGuards(AuthGuard)
+  @Get('perfil')
+  async obtenerPerfil(@Req() req) {
+    const usuarioId = req.usuario.sub;
+    console.log(usuarioId);
+    const usuario = await this.usuariosService.buscarPorId(usuarioId);
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usuariosService.findOne(+id);
-  // }
+    if (!usuario) return null;
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-  //   return this.usuariosService.update(+id, updateUsuarioDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usuariosService.remove(+id);
-  // }
+    const { password, ...datosSinPassword } = usuario;
+    return datosSinPassword;
+  }
 }

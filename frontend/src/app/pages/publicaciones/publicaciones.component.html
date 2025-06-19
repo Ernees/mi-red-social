@@ -1,6 +1,9 @@
 <div class="publicaciones-grid">
   @for (pub of publicaciones; track $index) {
-  <app-publicacion-item [publicacion]="pub"></app-publicacion-item>
+  <app-publicacion-item
+    [publicacion]="pub"
+    (likeCambiado)="actualizarLikes(pub._id)"
+  ></app-publicacion-item>
   }
 </div>
 <div class="pagination-container">

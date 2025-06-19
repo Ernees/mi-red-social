@@ -3,6 +3,7 @@ import { PublicacionesService } from '../../services/publicaciones.service';
 import { PublicacionModel } from '../../models/publicacion.model';
 import { Router } from '@angular/router';
 import { PublicacionItemComponent } from './publicacion-item/publicacion-item.component';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-publicaciones',
@@ -19,7 +20,8 @@ export class PublicacionesComponent {
 
   constructor(
     private pubService: PublicacionesService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {}
   ngOnInit() {
     this.cargarPublicaciones();
@@ -53,5 +55,20 @@ export class PublicacionesComponent {
   }
   get totalPaginas(): number {
     return Math.ceil(this.total / this.limite);
+  }
+
+  actualizarLikes(publicacionId: string) {
+    const usuarioId = this.apiService.obtenerUsuarioId();
+    if (!usuarioId) return;
+
+    const pub = this.publicaciones.find((p) => p._id === publicacionId);
+    if (!pub) return;
+
+    const index = pub.likes.indexOf(usuarioId);
+    if (index === -1) {
+      pub.likes.push(usuarioId);
+    } else {
+      pub.likes.splice(index, 1);
+    }
   }
 }

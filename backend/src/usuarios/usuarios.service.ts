@@ -44,4 +44,7 @@ export class UsuariosService {
     const userFound = await this.usuarioModel.findOne({ email }).lean().exec();
     return userFound;
   }
+  async buscarPorId(id: string): Promise<Usuario | null> {
+    return this.usuarioModel.findById(id).lean().exec();
+  }
 }

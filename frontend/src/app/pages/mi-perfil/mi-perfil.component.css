@@ -1,0 +1,46 @@
+.perfil-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.perfil-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.foto-perfil {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007bff;
+}
+
+.perfil-info {
+  flex: 1;
+}
+
+.perfil-info h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.perfil-info p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.cargando {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}

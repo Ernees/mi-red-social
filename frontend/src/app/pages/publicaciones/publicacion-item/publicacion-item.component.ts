@@ -10,7 +10,7 @@ import { PublicacionesService } from '../../../services/publicaciones.service';
 })
 export class PublicacionItemComponent {
   @Input() publicacion!: PublicacionModel;
-  @Output() likeCambiado = new EventEmitter<void>();
+  @Output() likeCambiado = new EventEmitter<string>();
 
   constructor(private publicacionesService: PublicacionesService) {}
 
@@ -26,6 +26,6 @@ export class PublicacionItemComponent {
       ? this.publicacionesService.quitarLike(this.publicacion._id)
       : this.publicacionesService.darLike(this.publicacion._id);
 
-    accion.subscribe(() => this.likeCambiado.emit());
+    accion.subscribe(() => this.likeCambiado.emit(this.publicacion._id));
   }
 }

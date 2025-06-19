@@ -1,1 +1,27 @@
-<p>mi-perfil works!</p>
+<section class="perfil-container">
+  @if (usuario) {
+  <div class="perfil-card">
+    <img
+      [src]="'http://localhost:3000/fotos/' + usuario.foto"
+      class="foto-perfil"
+    />
+
+    <div class="perfil-info">
+      <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+      <p><strong>Email:</strong> {{ usuario.email }}</p>
+      <p><strong>Nombre de usuario:</strong> {{ usuario.nombreUsuario }}</p>
+      <p><strong>Perfil:</strong> {{ usuario.perfil }}</p>
+      <p>
+        <strong>Fecha de nacimiento:</strong>
+        {{ usuario.fNac | date : "longDate" }}
+      </p>
+      <p>
+        <strong>Descripción:</strong>
+        {{ usuario.descripcion || "Sin descripción" }}
+      </p>
+    </div>
+  </div>
+  } @else {
+  <p class="cargando">Cargando perfil...</p>
+  }
+</section>
