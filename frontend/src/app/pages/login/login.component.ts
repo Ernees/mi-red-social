@@ -16,9 +16,8 @@ import { ApiService } from '../../services/api.service';
 })
 export class LoginComponent {
   formulario: FormGroup;
-  apiService = inject(ApiService);
   mensajeError = signal('');
-  constructor() {
+  constructor(private apiService: ApiService) {
     this.formulario = new FormGroup({
       mail: new FormControl<string>('', {
         validators: [

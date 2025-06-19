@@ -10,7 +10,7 @@ import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
     UsuariosModule,
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET || 'CLAVEULTRASECRETA',
+      secret: 'CLAVEULTRASECRETA', //agregar el process.env.JWT_PASS
       signOptions: { expiresIn: '1h' },
     }),
   ],

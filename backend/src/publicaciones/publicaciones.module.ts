@@ -3,6 +3,7 @@ import { PublicacionesService } from './publicaciones.service';
 import { PublicacionesController } from './publicaciones.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PublicacionSchema } from './entities/publicacione.entity';
+import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { PublicacionSchema } from './entities/publicacione.entity';
     ]),
   ],
   controllers: [PublicacionesController],
-  providers: [PublicacionesService],
+  providers: [PublicacionesService, AuthGuard],
 })
 export class PublicacionesModule {}

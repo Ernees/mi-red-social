@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CrearPubliComponent } from './pages/publicaciones/crear-publi/crear-publi.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,15 @@ export const routes: Routes = [
       ),
     // canActivate: [logeadoGuard],
     // canActivate:[authGuard]
+  },
+  {
+    path: 'publicaciones/crear',
+    loadComponent: () =>
+      import('./pages/publicaciones/crear-publi/crear-publi.component').then(
+        (modulo) => modulo.CrearPubliComponent
+      ),
+
+    // canActivate: [logeadoGuard], // si aplica
   },
   {
     path: 'mi-perfil',

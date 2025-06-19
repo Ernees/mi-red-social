@@ -54,7 +54,7 @@ export class RegistroComponent {
         fNac: new FormControl<number>(0, {
           validators: [Validators.required],
         }),
-        descripcion: new FormControl<number>(0, {
+        descripcion: new FormControl<string>('', {
           validators: [Validators.max(80), Validators.required],
         }),
         password: new FormControl<string>('', {

@@ -1,15 +1,14 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 export class CreatePublicacioneDto {
-  //cuando lo traiga el back se elimina el ususairoID
-  @IsNotEmpty({ message: 'El id es obligatorio' })
+  @IsOptional()
   usuarioId: string;
 
-  @IsNotEmpty({ message: 'El titulo es obligatorio' })
+  @IsNotEmpty({ message: 'El título es obligatorio' })
   titulo: string;
 
-  @IsNotEmpty({ message: 'El mensaje es obligatorio' })
-  mensaje: string;
+  @IsNotEmpty({ message: 'La descripción es obligatoria' })
+  descripcion: string;
 
   @IsOptional()
-  imagen: string;
+  urlImagen?: string;
 }

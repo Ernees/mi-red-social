@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 export type PublicacionDocument = HydratedDocument<Publicacion>;
 @Schema({ timestamps: true })
 export class Publicacion {
@@ -12,8 +12,8 @@ export class Publicacion {
   @Prop()
   urlImagen?: string;
 
-  @Prop()
-  usuarioId: string;
+  @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
+  usuarioId: Types.ObjectId;
 
   @Prop({ default: [] })
   comentarios: {
@@ -22,11 +22,8 @@ export class Publicacion {
     fecha: Date;
   }[];
 
-  @Prop({ default: [] })
-  likes: string[]; // array de userids
-
-  @Prop()
-  fecha: Date;
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Usuario' }], default: [] })
+  likes: Types.ObjectId[];
 
   @Prop({ default: true })
   activa: boolean;

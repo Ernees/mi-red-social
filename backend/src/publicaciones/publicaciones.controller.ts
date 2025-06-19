@@ -22,23 +22,34 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
 import { diskStorage } from 'multer';
 import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
-// import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
-
+import { existsSync, mkdirSync } from 'fs';
+import { extname } from 'path';
 @Controller('publicaciones')
 export class PublicacionesController {
   constructor(private readonly publicacionesService: PublicacionesService) {}
-
   @UseGuards(AuthGuard)
   @Post('alta')
   @UseInterceptors(
     FileInterceptor('imagen', {
       storage: diskStorage({
         filename(req, file, callback) {
-          const nuevoNombre = Date.now() + '-' + file.originalname;
+          const ext = extname(file.originalname);
+          //para guardar las imagenes con nombres q no generen problemas
+          const nombreBase = file.originalname
+            .replace(ext, '')
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '');
+
+          const nuevoNombre = `${Date.now()}-${nombreBase}${ext}`;
           callback(null, nuevoNombre);
         },
         destination(req, file, callback) {
-          callback(null, 'public/imgpublicaciones');
+          const path = 'public/imgpublicaciones';
+          if (!existsSync(path)) {
+            mkdirSync(path, { recursive: true });
+          }
+          callback(null, path);
         },
       }),
     }),
@@ -55,20 +66,19 @@ export class PublicacionesController {
     @Body() createPublicacionDto: CreatePublicacioneDto,
     @Req() req,
   ) {
-    const usuario = req['usuario'];
-    const usuarioId = usuario.sub;
+    const usuarioId = req.usuario.sub;
+    console.log(usuarioId);
 
     const dtoConImagen: CreatePublicacioneDto = {
       ...createPublicacionDto,
-      imagen: imagen.filename,
+      urlImagen: imagen.filename,
       usuarioId,
     };
 
     return await this.publicacionesService.create(dtoConImagen);
   }
 
-  @UseGuards(AuthGuard)
-  @Get()
+  @Get('/traer')
   async findAll(
     @Query('orden') orden: 'fecha' | 'likes' = 'fecha',
     @Query('offset') offset = '0',
@@ -86,23 +96,22 @@ export class PublicacionesController {
       limit: parseInt(limit),
     });
   }
-
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.publicacionesService.findOne(+id);
+    return this.publicacionesService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
   @Post(':id/like')
   async likePublicacion(@Param('id') publicacionId: string, @Req() req) {
-    const usuario = req['usuario']; // payload del token que el guard guardo
+    const usuario = req['usuario'];
     const usuarioId = usuario.sub;
 
     return this.publicacionesService.darLike(publicacionId, usuarioId);
   }
-
   @UseGuards(AuthGuard)
-  @Delete(':id/like')
+  @Post(':id/unlike')
   async quitarLike(@Param('id') publicacionId: string, @Req() req) {
     const usuario = req['usuario'];
     const usuarioId = usuario.sub;
@@ -110,15 +119,11 @@ export class PublicacionesController {
     return this.publicacionesService.quitarLike(publicacionId, usuarioId);
   }
 
-  //Aca voy a usar un guard() jwtAuthGuard y ademas del @Param
-  //se recibe por parametro el req con le token para validar que sea o el propietario o admin
-  //y desde el token se va a acceder a el id y al rol
-  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') idPublicacion: string, @Req() req) {
     const usuario = req['usuario'];
     const idUsuario = usuario.sub;
-    const esAdmin = usuario.rol === 'admin';
+    const esAdmin = usuario.perfil === 'admin';
 
     return this.publicacionesService.remove(idPublicacion, idUsuario, esAdmin);
   }

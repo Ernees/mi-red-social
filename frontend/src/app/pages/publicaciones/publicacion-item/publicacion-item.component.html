@@ -1,0 +1,24 @@
+<div class="publicacion-card">
+  <h5 class="card-title">{{ publicacion.titulo }}</h5>
+  <p class="card-text">{{ publicacion.descripcion }}</p>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="image-wrapper">
+      @if (publicacion.urlImagen) {
+      <img
+        [src]="
+          'http://localhost:3000/imgpublicaciones/' + publicacion.urlImagen
+        "
+        class="card-img-top"
+        alt="Imagen de la publicación"
+      />
+      }
+    </div>
+    <div class="botones">
+      <button class="btn btn-outline-primary btn-sm" (click)="toggleLike()">
+        {{ dioLike() ? "Quitar Like ❤️" : "Dar Like 🤍" }}
+      </button>
+    </div>
+    <span>{{ publicacion.likes.length }} Me gusta</span>
+  </div>
+</div>

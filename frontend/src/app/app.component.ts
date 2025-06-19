@@ -13,7 +13,5 @@ export class AppComponent {
   apiService = inject(ApiService);
   ngOnInit() {
     this.apiService.traer();
-    // this.apiService.traerPorId(99);
-    // this.apiService.modificarPorId(100);
   }
 }

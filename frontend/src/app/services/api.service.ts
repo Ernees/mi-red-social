@@ -11,16 +11,21 @@ export class ApiService {
   // POST a usuarios/
   crear(dataRegistro: FormData) {
     this.httpClient
-      .post(environment.api_url + 'autenticacion/registro', dataRegistro)
+      .post<{ access_token: string }>(
+        environment.api_url + 'autenticacion/registro',
+        dataRegistro
+      )
       .subscribe((data) => {
-        console.log(data);
+        console.log(data, 'data desde CL');
+        localStorage.setItem('token', data.access_token);
+        console.log(localStorage.getItem('token'), 'token desde LS');
       });
   }
 
   // GET a usuarios/
   traer() {
     this.httpClient.get(environment.api_url + 'usuarios').subscribe((datos) => {
-      console.log(datos);
+      console.log(datos, 'datos desde el TRAER');
     });
   }
 
@@ -28,9 +33,14 @@ export class ApiService {
     console.log(`${dataInicioSesion.mail} y ${dataInicioSesion.password}`);
 
     this.httpClient
-      .post(environment.api_url + 'autenticacion/login', dataInicioSesion)
+      .post<{ access_token: string }>(
+        environment.api_url + 'autenticacion/login',
+        dataInicioSesion
+      )
       .subscribe((datos) => {
         console.log(datos);
+        localStorage.setItem('token', datos.access_token);
+        console.log(localStorage.getItem('token'), 'inciar sesion/apiservice');
       });
   }
 

@@ -7,7 +7,7 @@ import {
 import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
 // import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PipelineStage } from 'mongoose';
+import { Model, PipelineStage, Types } from 'mongoose';
 import { Publicacion } from './entities/publicacione.entity';
 
 @Injectable()
@@ -21,17 +21,13 @@ export class PublicacionesService {
   async create(createPublicacionDto: CreatePublicacioneDto) {
     const nueva = new this.publicacionModel({
       ...createPublicacionDto,
-      //urlImagen: `public/imgpublicaciones/${createPublicacionDto.imagen}`,
       activa: true,
-      likes: [],
       comentarios: [],
-      fecha: new Date(),
     });
 
     return await nueva.save();
   }
 
-  //devuelve la lista de publis dependiento del orden
   async findAll({
     orden,
     usuarioId,
@@ -43,43 +39,48 @@ export class PublicacionesService {
     offset: number;
     limit: number;
   }) {
-    //filtro solo las publicaciones activas
-    //objeto que tiene como claves strings y dentro any cosas
     const filtro: Record<string, any> = { activa: true };
+    if (usuarioId) filtro.usuarioId = usuarioId;
 
-    //Si hay usuarioId lo agrego el filtro
-    if (usuarioId) {
-      filtro.usuarioId = usuarioId;
-    }
-
-    //pipeline para aggregate()
-    //PipeLineStage[] representa cada etapa posible del aggregate()
     const pipeline: PipelineStage[] = [{ $match: filtro }];
 
     if (orden === 'likes') {
       pipeline.push({
         $addFields: {
-          cantidadLikes: { $size: '$likes' }, // cantidad de likes del array
+          cantidadLikes: { $size: '$likes' },
         },
       });
-
-      pipeline.push({
-        $sort: { cantidadLikes: -1 }, //ordenar de mayor cantidad a menor
-      });
+      pipeline.push({ $sort: { cantidadLikes: -1 } });
     } else {
-      pipeline.push({
-        $sort: { fecha: -1 }, // orden por fecha +reciente a +vieja
-      });
+      pipeline.push({ $sort: { fecha: -1 } });
     }
 
     pipeline.push({ $skip: offset });
     pipeline.push({ $limit: limit });
-    //me aseguro que mi modelo siempre devuelve la forma esperada tipando
-    return this.publicacionModel.aggregate<Publicacion>(pipeline).exec();
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} publicacione`;
+    const publicaciones = await this.publicacionModel
+      .aggregate<Publicacion>(pipeline)
+      .exec();
+    const total = await this.publicacionModel.countDocuments(filtro);
+
+    return {
+      publicaciones,
+      total,
+    };
+  }
+  async findOne(publicacionId: string) {
+    const publicacion = await this.publicacionModel.findById(publicacionId);
+
+    if (!publicacion) {
+      throw new NotFoundException('Publicación no encontrada');
+    }
+
+    return {
+      id: publicacion._id,
+      titulo: publicacion.titulo,
+      descripcion: publicacion.descripcion,
+      urlImagen: publicacion.urlImagen,
+    };
   }
 
   //validar q sea solo el user q la hizo o un admin
@@ -90,7 +91,9 @@ export class PublicacionesService {
       throw new NotFoundException('Publicación no encontrada');
     }
 
-    const esPropietario = publicacion.usuarioId === usuarioId;
+    const esPropietario = new Types.ObjectId(publicacion.usuarioId).equals(
+      usuarioId,
+    );
 
     if (!esPropietario && !esAdmin) {
       throw new ForbiddenException(
@@ -102,7 +105,10 @@ export class PublicacionesService {
     return await publicacion.save(); // baja logica
   }
 
-  async darLike(publicacionId: string, usuarioId: string): Promise<string> {
+  async darLike(
+    publicacionId: string,
+    usuarioId: string,
+  ): Promise<{ likesCount: number }> {
     const publicacion = await this.publicacionModel.findById(publicacionId);
 
     if (!publicacion) {
@@ -110,32 +116,32 @@ export class PublicacionesService {
     }
 
     //verifico si el usuario ya le dio like
-    if (publicacion.likes.includes(usuarioId)) {
-      return 'Ya diste like a esta publicación';
+    if (publicacion.likes.some((id) => id.equals(usuarioId))) {
+      return { likesCount: publicacion.likes.length };
     }
 
-    //si no le había dado like lo agregamos
-    publicacion.likes.push(usuarioId);
-    //convierto a array lo que converti a un set del array original jasjsaj
-    //para asegurarnos que no haya duplicados
-    publicacion.likes = Array.from(new Set(publicacion.likes));
-
+    // Si no le había dado like, lo agregamos
+    publicacion.likes.push(new Types.ObjectId(usuarioId));
     await publicacion.save();
-    return 'Like agregado';
+
+    return { likesCount: publicacion.likes.length };
   }
 
-  async quitarLike(publicacionId: string, usuarioId: string): Promise<string> {
+  async quitarLike(
+    publicacionId: string,
+    usuarioId: string,
+  ): Promise<{ likesCount: number }> {
     const publicacion = await this.publicacionModel.findById(publicacionId);
 
     if (!publicacion) throw new NotFoundException('Publicación no encontrada');
 
-    if (!publicacion.likes.includes(usuarioId)) {
-      //nunca confiar en el front
-      throw new BadRequestException('No habías dado like');
+    if (!publicacion.likes.some((id) => id.equals(usuarioId))) {
+      throw new BadRequestException('No habias dado like');
     }
 
-    publicacion.likes = publicacion.likes.filter((id) => id !== usuarioId);
+    publicacion.likes = publicacion.likes.filter((id) => !id.equals(usuarioId));
     await publicacion.save();
-    return 'Like sacado';
+
+    return { likesCount: publicacion.likes.length };
   }
 }

@@ -1,63 +1,57 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
 import { PublicacionesService } from '../../services/publicaciones.service';
+import { PublicacionModel } from '../../models/publicacion.model';
+import { Router } from '@angular/router';
+import { PublicacionItemComponent } from './publicacion-item/publicacion-item.component';
 
 @Component({
   selector: 'app-publicaciones',
-  imports: [],
+  imports: [PublicacionItemComponent],
   templateUrl: './publicaciones.component.html',
   styleUrl: './publicaciones.component.css',
 })
 export class PublicacionesComponent {
-  formulario: FormGroup;
-  pubService = inject(PublicacionesService);
-  imagen?: File;
-  constructor() {
-    this.formulario = new FormGroup({
-      titulo: new FormControl<string>('', {
-        validators: [
-          Validators.minLength(3),
-          Validators.maxLength(15),
-          Validators.required,
-        ],
-      }),
-      descripcion: new FormControl<string>('', {
-        validators: [
-          Validators.minLength(3),
-          Validators.maxLength(15),
-          Validators.required,
-        ],
-      }),
-      foto: new FormControl<File | null>(null, {
-        validators: [Validators.required],
-      }),
-    });
+  orden: 'fecha' | 'likes' = 'fecha';
+  pagina: number = 1;
+  limite: number = 5;
+  total: number = 0;
+  publicaciones: PublicacionModel[] = [];
+
+  constructor(
+    private pubService: PublicacionesService,
+    private router: Router
+  ) {}
+  ngOnInit() {
+    this.cargarPublicaciones();
   }
-  cargaDeImagen(event: any) {
-    if (event.target && event.target.files) {
-      console.log(event.target.files[0]);
-      this.imagen = event.target.files[0];
+
+  cargarPublicaciones() {
+    const offset = (this.pagina - 1) * this.limite;
+    this.pubService
+      .obtenerPublicaciones(this.orden, offset, this.limite)
+      .subscribe((data) => {
+        this.publicaciones = data.publicaciones;
+        this.total = data.total;
+      });
+  }
+  irCrearPublicacion() {
+    this.router.navigate(['/publicaciones/crear']);
+  }
+
+  paginaSiguiente() {
+    if (this.pagina < this.totalPaginas) {
+      this.pagina++;
+      this.cargarPublicaciones();
     }
   }
-  altaPublicacion() {
-    if (this.imagen) {
-      // Extraer los datos de los formularios y pasarlos al form data
-      if (this.formulario.invalid) return;
-      const datos = this.formulario.value;
-      const formData = new FormData();
-      console.log(datos.email);
 
-      formData.append('nombre', datos.nombre);
-      formData.append('apellido', datos.apellido);
-      formData.append('email', datos.mail);
-      formData.append('nombreUsuario', datos.nombreUsuario);
-      formData.append('fNac', datos.fNac);
-      formData.append('password', datos.password);
-      formData.append('descripcion', datos.descripcion);
-      formData.append('foto', this.imagen, this.imagen.name);
-      console.log(formData);
-
-      this.pubService.crearPubli(formData);
+  paginaAnterior() {
+    if (this.pagina > 1) {
+      this.pagina--;
+      this.cargarPublicaciones();
     }
+  }
+  get totalPaginas(): number {
+    return Math.ceil(this.total / this.limite);
   }
 }
