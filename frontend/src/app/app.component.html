@@ -1,5 +1,14 @@
-<button routerLink="/registro">Registro</button>
-<button routerLink="/login">Login</button>
-<button routerLink="/publicaciones">Publicaciones</button>
-<button routerLink="/mi-perfil">Mi Perfil</button>
+<nav class="navbar">
+  <div class="navbar-logo">🧠 SocialMind</div>
+  <div class="navbar-links">
+    <a routerLink="/bienvenida" routerLinkActive="active-link">Bienvenida</a>
+    <a routerLink="/registro" routerLinkActive="active-link">Registro</a>
+    <a routerLink="/login" routerLinkActive="active-link">Login</a>
+    <a routerLink="/publicaciones" routerLinkActive="active-link"
+      >Publicaciones</a
+    >
+    <a routerLink="/mi-perfil" routerLinkActive="active-link">Mi Perfil</a>
+  </div>
+</nav>
+
 <router-outlet />

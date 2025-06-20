@@ -18,7 +18,6 @@ export class UsuariosController {
   @Get('perfil')
   async obtenerPerfil(@Req() req) {
     const usuarioId = req.usuario.sub;
-    console.log(usuarioId);
     const usuario = await this.usuariosService.buscarPorId(usuarioId);
 
     if (!usuario) return null;

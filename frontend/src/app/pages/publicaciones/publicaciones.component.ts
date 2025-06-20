@@ -14,7 +14,7 @@ import { ApiService } from '../../services/api.service';
 export class PublicacionesComponent {
   orden: 'fecha' | 'likes' = 'fecha';
   pagina: number = 1;
-  limite: number = 5;
+  limite: number = 3;
   total: number = 0;
   publicaciones: PublicacionModel[] = [];
 

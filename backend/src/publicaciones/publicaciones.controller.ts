@@ -67,7 +67,6 @@ export class PublicacionesController {
     @Req() req,
   ) {
     const usuarioId = req.usuario.sub;
-    console.log(usuarioId);
 
     const dtoConImagen: CreatePublicacioneDto = {
       ...createPublicacionDto,

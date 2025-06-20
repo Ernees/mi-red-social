@@ -17,7 +17,6 @@ export class MiPerfilComponent {
   ngOnInit() {
     this.usuarioService.obtenerPerfil().subscribe((data) => {
       this.usuario = data;
-      console.log(this.usuario.foto);
     });
   }
 }
