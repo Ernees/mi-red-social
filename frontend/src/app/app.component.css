@@ -18,16 +18,23 @@
   color: #f5f5f5;
 }
 
-.navbar-links a {
+/* Estilo común para todos los hijos dentro de navbar-links */
+.navbar-links > * {
   color: #dcdcdc;
   text-decoration: none;
   margin: 0 1rem;
   font-size: 1rem;
   position: relative;
   transition: color 0.3s ease;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
 }
 
-.navbar-links a::after {
+/* Línea animada al pasar el mouse */
+.navbar-links > *::after {
   content: "";
   position: absolute;
   width: 0;
@@ -38,23 +45,24 @@
   transition: width 0.3s ease;
 }
 
-.navbar-links a:hover::after {
+.navbar-links > *:hover::after {
   width: 100%;
 }
 
-.navbar-links a:hover {
+.navbar-links > *:hover {
   color: #ffffff;
 }
 
-/* Link activo */
+/* Link o botón activo */
 .active-link {
   color: #ffffff;
   font-weight: bold;
 }
 
-.active-link::after {
-  width: 100%;
-  background-color: #4a90e2;
+.active-link {
+  color: #ffffff;
+  font-weight: bold;
+  border-bottom: 2px solid #4a90e2;
 }
 
 @media (max-width: 768px) {
@@ -70,7 +78,7 @@
     margin-top: 0.5rem;
   }
 
-  .navbar-links a {
+  .navbar-links > * {
     margin: 0.5rem 0;
   }
 }

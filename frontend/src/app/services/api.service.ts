@@ -8,40 +8,11 @@ import { HttpClient } from '@angular/common/http';
 export class ApiService {
   constructor(private httpClient: HttpClient) {}
 
-  // POST a usuarios/
-  crear(dataRegistro: FormData) {
-    this.httpClient
-      .post<{ access_token: string }>(
-        environment.api_url + 'autenticacion/registro',
-        dataRegistro
-      )
-      .subscribe((data) => {
-        console.log(data, 'data desde CL');
-        localStorage.setItem('token', data.access_token);
-        console.log(localStorage.getItem('token'), 'token desde LS');
-      });
-  }
-
   // GET a usuarios/
   traer() {
     this.httpClient.get(environment.api_url + 'usuarios').subscribe((datos) => {
       console.log(datos, 'datos desde el TRAER');
     });
-  }
-
-  iniciarSesion(dataInicioSesion: { mail: string; password: string }) {
-    console.log(`${dataInicioSesion.mail} y ${dataInicioSesion.password}`);
-
-    this.httpClient
-      .post<{ access_token: string }>(
-        environment.api_url + 'autenticacion/login',
-        dataInicioSesion
-      )
-      .subscribe((datos) => {
-        console.log(datos);
-        localStorage.setItem('token', datos.access_token);
-        console.log(localStorage.getItem('token'), 'inciar sesion/apiservice');
-      });
   }
 
   traerPorId(id: number) {

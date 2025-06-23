@@ -1,13 +1,17 @@
 <nav class="navbar">
   <div class="navbar-logo">🧠 SocialMind</div>
   <div class="navbar-links">
+    @if (!authService.estaLogueado()) {
     <a routerLink="/bienvenida" routerLinkActive="active-link">Bienvenida</a>
     <a routerLink="/registro" routerLinkActive="active-link">Registro</a>
     <a routerLink="/login" routerLinkActive="active-link">Login</a>
+    } @else {
     <a routerLink="/publicaciones" routerLinkActive="active-link"
       >Publicaciones</a
     >
     <a routerLink="/mi-perfil" routerLinkActive="active-link">Mi Perfil</a>
+    <button (click)="authService.cerrarSesion()">Cerrar sesión</button>
+    }
   </div>
 </nav>
 

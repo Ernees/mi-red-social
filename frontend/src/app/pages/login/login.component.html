@@ -64,10 +64,12 @@
       (click)="iniciarSesion()"
       [disabled]="!formulario.valid"
     >
-      Iniciar Sesión
+      @if (cargando) { Iniciando sesión... } @else { Iniciar sesión }
     </button>
 
-    @if (mensajeError() == "AuthApiError: Invalid login credentials") {
+    @if (cargando) {
+    <div>Por favor espera, iniciando sesión...</div>
+    } @if (mensajeError()) {
     <p class="text-danger">
       Email o password incorrectos, por favor intente de nuevo
     </p>

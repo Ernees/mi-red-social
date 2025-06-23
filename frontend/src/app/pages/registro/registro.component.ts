@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { passwordMatchValidator } from '../../validators/match-password.validator';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -18,8 +19,10 @@ import { passwordMatchValidator } from '../../validators/match-password.validato
 export class RegistroComponent {
   formulario: FormGroup;
   apiService = inject(ApiService);
+  cargando = false;
+  mensajeError = signal('');
   archivo?: File;
-  constructor() {
+  constructor(private authService: AuthService) {
     this.formulario = new FormGroup(
       {
         nombre: new FormControl<string>('', {
@@ -86,13 +89,11 @@ export class RegistroComponent {
       this.archivo = event.target.files[0];
     }
   }
+
   registrarse() {
-    if (this.archivo) {
-      // Extraer los datos de los formularios y pasarlos al form data
-      if (this.formulario.invalid) return;
+    if (this.archivo && !this.formulario.invalid) {
       const datos = this.formulario.value;
       const formData = new FormData();
-      console.log(datos.email);
 
       formData.append('nombre', datos.nombre);
       formData.append('apellido', datos.apellido);
@@ -102,9 +103,24 @@ export class RegistroComponent {
       formData.append('password', datos.password);
       formData.append('descripcion', datos.descripcion);
       formData.append('foto', this.archivo, this.archivo.name);
-      console.log(formData);
 
-      this.apiService.crear(formData);
+      this.cargando = true;
+      this.mensajeError.set('');
+
+      this.authService.registrarse(formData).subscribe({
+        next: (data) => {
+          console.log('Registro exitoso:', data);
+          localStorage.setItem('token', data.access_token);
+          this.formulario.reset();
+          this.authService.router.navigateByUrl('/publicaciones');
+          this.cargando = false;
+        },
+        error: (error) => {
+          console.error('Error al registrarse:', error);
+          this.mensajeError.set('Error al registrarse');
+          this.cargando = false;
+        },
+      });
     }
   }
 

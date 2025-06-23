@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,12 @@ import { ApiService } from '../../services/api.service';
 export class LoginComponent {
   formulario: FormGroup;
   mensajeError = signal('');
-  constructor(private apiService: ApiService) {
+  cargando = false;
+
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {
     this.formulario = new FormGroup({
       mail: new FormControl<string>('', {
         validators: [
@@ -39,12 +45,26 @@ export class LoginComponent {
 
   async iniciarSesion() {
     if (!this.formulario.valid) return;
-    const datos = this.formulario.value;
-    console.log(datos.mail);
-    console.log(datos.password);
-    this.apiService.iniciarSesion({
-      mail: datos.mail,
-      password: datos.password,
+
+    const mail = this.formulario.value.mail;
+    const password = this.formulario.value.password;
+    const credenciales = { mail, password };
+
+    this.cargando = true;
+    this.mensajeError.set('');
+
+    this.authService.iniciarSesion(credenciales).subscribe({
+      next: (respuesta) => {
+        localStorage.setItem('token', respuesta.access_token);
+        this.formulario.reset();
+        this.authService.router.navigateByUrl('/publicaciones');
+        this.cargando = false;
+      },
+      error: (error) => {
+        console.error('Error al logearse:', error);
+        this.mensajeError.set('Correo o contraseña incorrectos.');
+        this.cargando = false;
+      },
     });
   }
 

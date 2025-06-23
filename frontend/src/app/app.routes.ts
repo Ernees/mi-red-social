@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+import { logeadoGuard } from './guards/logeado.guard';
 
 export const routes: Routes = [
   {
@@ -7,27 +9,15 @@ export const routes: Routes = [
       import('./pages/registro/registro.component').then(
         (modulo) => modulo.RegistroComponent
       ),
-    // canActivate: [logeadoGuard],
-    // canActivate:[authGuard]
+    canActivate: [logeadoGuard],
   },
-  {
-    path: 'bienvenida',
-    loadComponent: () =>
-      import('./pages/bienvenida/bienvenida.component').then(
-        (modulo) => modulo.BienvenidaComponent
-      ),
-    // canActivate: [logeadoGuard],
-    // canActivate:[authGuard]
-  },
-
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.component').then(
         (modulo) => modulo.LoginComponent
       ),
-    // canActivate: [logeadoGuard],
-    // canActivate:[authGuard]
+    canActivate: [logeadoGuard],
   },
   {
     path: 'publicaciones',
@@ -35,8 +25,7 @@ export const routes: Routes = [
       import('./pages/publicaciones/publicaciones.component').then(
         (modulo) => modulo.PublicacionesComponent
       ),
-    // canActivate: [logeadoGuard],
-    // canActivate:[authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'publicaciones/crear',
@@ -44,8 +33,6 @@ export const routes: Routes = [
       import('./pages/publicaciones/crear-publi/crear-publi.component').then(
         (modulo) => modulo.CrearPubliComponent
       ),
-
-    // canActivate: [logeadoGuard], // si aplica
   },
   {
     path: 'mi-perfil',
@@ -53,7 +40,21 @@ export const routes: Routes = [
       import('./pages/mi-perfil/mi-perfil.component').then(
         (modulo) => modulo.MiPerfilComponent
       ),
-    // canActivate: [logeadoGuard],
-    // canActivate:[authGuard]
+    canActivate: [authGuard],
+  },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/bienvenida/bienvenida.component').then(
+        (modulo) => modulo.BienvenidaComponent
+      ),
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/bienvenida/bienvenida.component').then(
+        (modulo) => modulo.BienvenidaComponent
+      ),
   },
 ];

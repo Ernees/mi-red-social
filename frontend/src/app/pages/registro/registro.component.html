@@ -196,6 +196,16 @@
     </div>
 
     <!-- BOTÓN -->
-    <button type="submit" [disabled]="!formulario.valid">Registrarme</button>
+    <button
+      type="submit"
+      (click)="registrarse()"
+      [disabled]="!formulario.valid"
+    >
+      @if (cargando) { Registrando... } @else { Registrarse }
+    </button>
+
+    @if (mensajeError()) {
+    <div class="text-danger">{{ mensajeError() }}</div>
+    }
   </form>
 </div>

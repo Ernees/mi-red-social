@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { ApiService } from './services/api.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,4 +15,5 @@ export class AppComponent {
   ngOnInit() {
     this.apiService.traer();
   }
+  constructor(public authService: AuthService) {}
 }
