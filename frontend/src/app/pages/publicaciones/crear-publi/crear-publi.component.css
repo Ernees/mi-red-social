@@ -4,7 +4,7 @@ form {
   margin: 2rem auto;
   padding: 2rem 2.5rem;
   border-radius: 12px;
-  background-color: #3a3a3a; /* Fondo gris oscuro */
+  background-color: #3a3a3a;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #e0e0e0;
@@ -13,20 +13,17 @@ form {
   gap: 1.5rem;
 }
 
-/* Cada grupo de label + input */
 .mb-3 {
   display: flex;
   flex-direction: column;
 }
 
-/* Label */
 .mb-3 label {
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #d0d0d0;
 }
 
-/* Inputs (text y file) */
 .mb-3 input[type="text"],
 .mb-3 input[type="file"] {
   padding: 0.65rem 0.8rem;
@@ -39,12 +36,10 @@ form {
   font-family: inherit;
 }
 
-/* Placeholder en inputs */
 .mb-3 input::placeholder {
   color: #999999;
 }
 
-/* Focus en inputs */
 .mb-3 input[type="text"]:focus,
 .mb-3 input[type="file"]:focus {
   outline: none;
@@ -53,7 +48,6 @@ form {
   box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
 }
 
-/* Botón crear publicación */
 form button {
   padding: 0.85rem;
   font-size: 1.1rem;
@@ -68,14 +62,12 @@ form button {
   width: 100%;
 }
 
-/* Hover y focus botón */
 form button:hover {
   background-color: #4a90e2;
   color: #ffffff;
   box-shadow: 0 0 12px rgba(74, 144, 226, 0.8);
 }
 
-/* Mensajes de error (por si los usas) */
 .text-danger {
   color: #ff5f5f;
   margin-top: 0.3rem;
