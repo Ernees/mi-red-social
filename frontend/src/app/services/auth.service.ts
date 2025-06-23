@@ -32,6 +32,13 @@ export class AuthService {
       return true;
     }
   }
+  getDatosToken(token: string): any | null {
+    try {
+      return jwtDecode(token);
+    } catch {
+      return null;
+    }
+  }
   cerrarSesion(): void {
     localStorage.removeItem('token');
     this.router.navigateByUrl('/bienvenida');
@@ -49,7 +56,6 @@ export class AuthService {
       dataInicioSesion
     );
   }
-  // POST a usuarios/
   registrarse(dataRegistro: FormData) {
     return this.httpClient.post<{ access_token: string }>(
       environment.api_url + 'autenticacion/registro',

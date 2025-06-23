@@ -96,9 +96,15 @@ export class PublicacionesController {
     });
   }
   @UseGuards(AuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicacionesService.findOne(id);
+  @Get('mis-publicaciones')
+  async misPublicaciones(@Req() req) {
+    const usuario = req['usuario'];
+    return this.publicacionesService.findAll({
+      orden: 'fecha',
+      usuarioId: usuario.sub,
+      offset: 0,
+      limit: 3,
+    });
   }
 
   @UseGuards(AuthGuard)

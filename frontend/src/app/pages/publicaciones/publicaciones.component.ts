@@ -36,7 +36,7 @@ export class PublicacionesComponent {
         this.total = data.total;
       });
   }
-  irCrearPublicacion() {
+  crearPublicacion() {
     this.router.navigate(['/publicaciones/crear']);
   }
 

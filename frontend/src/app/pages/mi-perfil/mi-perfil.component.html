@@ -21,5 +21,18 @@
       </p>
     </div>
   </div>
+
+  <div class="publicaciones-container">
+    @if (publicaciones.length > 0) {
+    <div class="publicaciones-grid">
+      @for (pub of publicaciones; track $index) {
+      <app-publicacion-item [publicacion]="pub"></app-publicacion-item>
+      }
+    </div>
+    } @else {
+    <p>Todavía no hiciste ninguna publicación</p>
+    <button (click)="crearPublicacion()">Crear publicación</button>
+    }
+  </div>
   }
 </section>

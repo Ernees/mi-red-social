@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { UsuarioModel } from '../models/usuario.model';
 import { environment } from '../../environments/environment';
 
@@ -11,13 +11,22 @@ export class UsuariosService {
   constructor(private http: HttpClient) {}
 
   obtenerPerfil(): Observable<UsuarioModel> {
-    const token = localStorage.getItem('token') || '';
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // Opcional: lanzar error o devolver observable que emita error
+      return throwError(() => new Error('No hay token disponible'));
+    }
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
+
     return this.http.get<UsuarioModel>(
       environment.api_url + 'usuarios/perfil',
-      { headers }
+      {
+        headers,
+      }
     );
   }
 }

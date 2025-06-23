@@ -50,6 +50,19 @@ export class PublicacionesService {
       params,
     });
   }
+  obtenerUltimasPublicaciones(usuarioId: string, token: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.get<{ publicaciones: PublicacionModel[] }>(
+      environment.api_url + 'publicaciones/mis-publicaciones',
+      {
+        params: new HttpParams().set('usuarioId', usuarioId),
+        headers,
+      }
+    );
+  }
 
   darLike(publicacionId: string): Observable<{ likesCount: number }> {
     const token = localStorage.getItem('token') || '';

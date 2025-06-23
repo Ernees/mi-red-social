@@ -6,9 +6,13 @@
     <a routerLink="/registro" routerLinkActive="active-link">Registro</a>
     <a routerLink="/login" routerLinkActive="active-link">Login</a>
     } @else {
-    <a routerLink="/publicaciones" routerLinkActive="active-link"
-      >Publicaciones</a
-    >
+    <div class="dropdown">
+      <a class="dropbtn">Publicaciones ▼</a>
+      <div class="dropdown-content">
+        <a routerLink="/publicaciones">Ver publicaciones</a>
+        <a routerLink="/publicaciones/crear">Crear publicación</a>
+      </div>
+    </div>
     <a routerLink="/mi-perfil" routerLinkActive="active-link">Mi Perfil</a>
     <button (click)="authService.cerrarSesion()">Cerrar sesión</button>
     }

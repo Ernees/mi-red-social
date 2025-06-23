@@ -3,6 +3,8 @@
   justify-content: center;
   padding: 2rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  flex-direction: column;
+  align-items: center;
 }
 
 .perfil-card {
@@ -10,7 +12,7 @@
   flex-direction: row;
   align-items: center;
   gap: 2rem;
-  background-color: #2e2e2e; /* mismo gris que navbar */
+  background-color: #2e2e2e;
   border-radius: 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   padding: 2rem;
@@ -47,8 +49,83 @@
   font-size: 1rem;
 }
 
+.publicaciones-container {
+  margin-top: 2rem;
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #e0e0e0;
+}
+
+.publicaciones-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  width: 100%;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .publicaciones-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 .cargando {
   text-align: center;
   font-size: 1.2rem;
   color: #999999;
+}
+
+/* .publicaciones-container button {
+  background-color: #444444;
+  color: #e0e0e0;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+.publicaciones-container button:hover {
+  background-color: #5a5a5a;
+}
+.publicaciones-container p {
+  color: #2e2e2e;
+} */
+.publicaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(100px, 5fr)
+  ); /* Ejemplo de columnas responsivas */
+  gap: 70px; /* Aquí controlas la separación entre las tarjetas */
+  padding: 20px; /* Opcional: para que no se peguen a los bordes de la pantalla */
+  justify-content: center; /* Centra el grid si las tarjetas no llenan todo el ancho */
+  align-items: start; /* Asegura que los ítems se alineen en la parte superior */
+}
+
+/* El CSS de tus botones y párrafos lo mantienes */
+.publicaciones-container button {
+  background-color: #444444;
+  color: #e0e0e0;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+.publicaciones-container button:hover {
+  background-color: #5a5a5a;
+}
+.publicaciones-container p {
+  color: #2e2e2e;
 }
