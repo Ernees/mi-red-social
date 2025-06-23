@@ -2,6 +2,7 @@
   @for (pub of publicaciones; track $index) {
   <app-publicacion-item
     [publicacion]="pub"
+    [mostrarBotonesLike]="true"
     (likeCambiado)="actualizarLikes(pub._id)"
   ></app-publicacion-item>
   }

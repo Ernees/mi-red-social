@@ -10,6 +10,7 @@ import { PublicacionesService } from '../../../services/publicaciones.service';
 })
 export class PublicacionItemComponent {
   @Input() publicacion!: PublicacionModel;
+  @Input() mostrarBotonesLike: boolean = true;
   @Output() likeCambiado = new EventEmitter<string>();
 
   constructor(private publicacionesService: PublicacionesService) {}

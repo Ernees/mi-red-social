@@ -26,7 +26,10 @@
     @if (publicaciones.length > 0) {
     <div class="publicaciones-grid">
       @for (pub of publicaciones; track $index) {
-      <app-publicacion-item [publicacion]="pub"></app-publicacion-item>
+      <app-publicacion-item
+        [publicacion]="pub"
+        [mostrarBotonesLike]="false"
+      ></app-publicacion-item>
       }
     </div>
     } @else {

@@ -15,9 +15,11 @@
       }
     </div>
     <div class="botones">
+      @if (mostrarBotonesLike) {
       <button class="btn btn-outline-primary btn-sm" (click)="toggleLike()">
         {{ dioLike() ? "Quitar Like ❤️" : "Dar Like 🤍" }}
       </button>
+      }
     </div>
     <span>{{ publicacion.likes.length }} Me gusta</span>
   </div>
