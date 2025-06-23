@@ -68,4 +68,15 @@ export class AutenticacionController {
     const usuario = this.authService.verificarToken(token);
     return { usuario };
   }
+
+  @Post('refrescar')
+  refrescarToken(@Req() req: Request) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader?.split(' ')[1];
+
+    const payload = this.authService.verificarToken(token);
+    const nuevoToken = this.authService.generarToken(payload);
+
+    return { token: nuevoToken };
+  }
 }

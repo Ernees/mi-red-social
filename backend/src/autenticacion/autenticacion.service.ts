@@ -78,4 +78,7 @@ export class AutenticacionService {
       throw new UnauthorizedException(`Token inválido o expirado ${error}`);
     }
   }
+  generarToken(payload: object) {
+    return this.jwtService.sign(payload, { expiresIn: '15m' });
+  }
 }
