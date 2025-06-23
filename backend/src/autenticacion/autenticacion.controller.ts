@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Post,
@@ -7,6 +10,7 @@ import {
   ParseFilePipe,
   UploadedFile,
   UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import { AutenticacionService } from './autenticacion.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
@@ -55,5 +59,13 @@ export class AutenticacionController {
   async login(@Body() body: { mail: string; password: string }) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this.authService.login(body.mail, body.password);
+  }
+  @Post('autorizar')
+  autorizar(@Req() req: Request) {
+    const header = req.headers['authorization'];
+    const token = header?.split(' ')[1];
+
+    const usuario = this.authService.verificarToken(token);
+    return { usuario };
   }
 }

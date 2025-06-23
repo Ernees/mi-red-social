@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
@@ -51,7 +52,7 @@ export class AutenticacionService {
 
     const coinciden = await bcrypt.compare(password, user.password);
     if (!coinciden) {
-      throw new UnauthorizedException(`Contraseña incorrecta`);
+      throw new UnauthorizedException('Contraseña incorrecta');
     }
 
     const payload = {
@@ -63,5 +64,18 @@ export class AutenticacionService {
       access_token: await this.jwtService.signAsync(payload),
       //agregar user? como en registro
     };
+  }
+  verificarToken(token: string) {
+    if (!token) {
+      //UnauthorizedException es error 401
+      throw new UnauthorizedException('Token no proporcionado');
+    }
+
+    try {
+      const payload = this.jwtService.verify(token);
+      return payload;
+    } catch (error) {
+      throw new UnauthorizedException(`Token inválido o expirado ${error}`);
+    }
   }
 }
