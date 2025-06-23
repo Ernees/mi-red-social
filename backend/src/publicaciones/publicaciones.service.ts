@@ -50,9 +50,9 @@ export class PublicacionesService {
           cantidadLikes: { $size: '$likes' },
         },
       });
-      pipeline.push({ $sort: { cantidadLikes: -1 } });
+      pipeline.push({ $sort: { cantidadLikes: -1, _id: 1 } });
     } else {
-      pipeline.push({ $sort: { fecha: -1 } });
+      pipeline.push({ $sort: { fecha: -1, _id: 1 } });
     }
 
     pipeline.push({ $skip: offset });
