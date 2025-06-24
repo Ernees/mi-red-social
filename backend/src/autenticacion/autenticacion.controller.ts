@@ -57,7 +57,6 @@ export class AutenticacionController {
 
   @Post('login')
   async login(@Body() body: { mail: string; password: string }) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return this.authService.login(body.mail, body.password);
   }
   @Post('autorizar')

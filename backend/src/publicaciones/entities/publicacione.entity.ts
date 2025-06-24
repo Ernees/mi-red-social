@@ -15,13 +15,6 @@ export class Publicacion {
   @Prop({ type: Types.ObjectId, ref: 'Usuario', required: true })
   usuarioId: Types.ObjectId;
 
-  @Prop({ default: [] })
-  comentarios: {
-    usuarioId: string;
-    texto: string;
-    fecha: Date;
-  }[];
-
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Usuario' }], default: [] })
   likes: Types.ObjectId[];
 

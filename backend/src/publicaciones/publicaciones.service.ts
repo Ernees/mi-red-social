@@ -8,13 +8,13 @@ import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
 // import { UpdatePublicacioneDto } from './dto/update-publicacione.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PipelineStage, Types } from 'mongoose';
-import { Publicacion } from './entities/publicacione.entity';
+import { PublicacionDocument } from './entities/publicacione.entity';
 
 @Injectable()
 export class PublicacionesService {
   constructor(
     @InjectModel('Publicacion')
-    private readonly publicacionModel: Model<Publicacion>,
+    private readonly publicacionModel: Model<PublicacionDocument>,
   ) {}
 
   //AGREGAR USERID Y EN EL MODEL TMB, AUTOR:USERID
@@ -59,7 +59,7 @@ export class PublicacionesService {
     pipeline.push({ $limit: limit });
 
     const publicaciones = await this.publicacionModel
-      .aggregate<Publicacion>(pipeline)
+      .aggregate<PublicacionDocument>(pipeline)
       .exec();
     const total = await this.publicacionModel.countDocuments(filtro);
 

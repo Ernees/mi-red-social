@@ -1,0 +1,13 @@
+<form [formGroup]="comentarioForm">
+  <textarea
+    formControlName="contenido"
+    placeholder="Agregá un comentario..."
+  ></textarea>
+  <button
+    type="button"
+    [disabled]="comentarioForm.invalid"
+    (click)="agregarComentario()"
+  >
+    Comentar
+  </button>
+</form>

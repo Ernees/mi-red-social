@@ -1,5 +1,9 @@
 export interface ComentarioModel {
+  _id: string;
+  contenido: string;
   usuarioId: string;
-  texto: string;
-  fecha: Date;
+  publicacionId: string;
+  modificado: boolean;
+  createdAt: string;
+  updatedAt: string;
 }

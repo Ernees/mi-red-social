@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AutenticacionModule } from './autenticacion/autenticacion.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { PublicacionesModule } from './publicaciones/publicaciones.module';
+import { ComentariosModule } from './comentarios/comentarios.module';
 // useFactory: es una función que devuelve un objeto de configuración con la URI de conexión a MongoDB.
 // configService.get('MONGO_URI'): obtiene el valor de esa variable del archivo .env.
 // inject: le indica a Nest que debe inyectar ConfigService en la función useFactory.
@@ -22,6 +23,7 @@ import { PublicacionesModule } from './publicaciones/publicaciones.module';
     PublicacionesModule,
     AutenticacionModule,
     UsuariosModule,
+    ComentariosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

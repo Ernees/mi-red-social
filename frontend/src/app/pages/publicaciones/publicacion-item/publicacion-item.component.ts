@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PublicacionModel } from '../../../models/publicacion.model';
 import { PublicacionesService } from '../../../services/publicaciones.service';
+import { ComentariosComponent } from '../comentarios/comentarios.component';
 
 @Component({
   selector: 'app-publicacion-item',
-  imports: [],
+  imports: [ComentariosComponent],
   templateUrl: './publicacion-item.component.html',
   styleUrl: './publicacion-item.component.css',
 })

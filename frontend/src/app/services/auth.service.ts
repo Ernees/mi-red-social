@@ -21,12 +21,12 @@ export class AuthService {
       //fecha actual en segundos
       const ahora = Math.floor(Date.now() / 1000);
 
-      // se compara con la fecha de expiración, si ya paso
+      //se compara con la fecha de expiración, si ya paso
       if (datosDelToken.exp < ahora) {
-        return true; // El token esta expirado
+        return true; //el token esta expirado
       }
 
-      return false; // El token todavía es valido
+      return false; //el token todavia es valido
     } catch (error) {
       //si tira cualquier error retorna true, o sea istokenExpirado? true.
       return true;
@@ -39,6 +39,7 @@ export class AuthService {
       return null;
     }
   }
+
   cerrarSesion(): void {
     localStorage.removeItem('token');
     this.router.navigateByUrl('/bienvenida');
