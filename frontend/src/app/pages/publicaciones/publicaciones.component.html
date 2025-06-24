@@ -1,11 +1,12 @@
 <div class="publicaciones-grid">
-  @for (pub of publicaciones; track $index) {
+  @if (publicaciones.length > 0) { @for (pub of publicaciones; track $index) {
+  @if (pub) {
   <app-publicacion-item
     [publicacion]="pub"
     [mostrarBotonesLike]="true"
     (likeCambiado)="actualizarLikes(pub._id)"
   ></app-publicacion-item>
-  }
+  } } }
 </div>
 <div class="pagination-container">
   <button

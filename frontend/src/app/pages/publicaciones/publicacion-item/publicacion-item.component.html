@@ -1,3 +1,4 @@
+@if (publicacion) {
 <div class="publicacion-card">
   <h5 class="card-title">{{ publicacion.titulo }}</h5>
   <p class="card-text">{{ publicacion.descripcion }}</p>
@@ -14,6 +15,7 @@
       />
       }
     </div>
+
     <div class="botones">
       @if (mostrarBotonesLike) {
       <button class="btn btn-outline-primary btn-sm" (click)="toggleLike()">
@@ -21,7 +23,16 @@
       </button>
       }
     </div>
+
     <span>{{ publicacion.likes.length }} Me gusta</span>
+
     <app-comentarios [publicacionId]="publicacion._id"></app-comentarios>
   </div>
+
+  @if (publicacion._id) {
+  <button class="btn btn-info btn-sm" (click)="verEnGrande()">
+    Ver en grande 🔍
+  </button>
+  }
 </div>
+}

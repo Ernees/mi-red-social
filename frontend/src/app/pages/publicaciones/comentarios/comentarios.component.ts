@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -23,7 +23,7 @@ export class ComentariosComponent {
   limite = 5;
   hayMas = true;
 
-  usuarioId: string | null = null; // <-- nueva propiedad
+  usuarioId: string | null = null;
 
   constructor(
     private comentariosService: ComentariosService,
@@ -31,7 +31,7 @@ export class ComentariosComponent {
     private authService: AuthService
   ) {
     this.comentarioForm = this.fb.group({
-      contenido: ['', Validators.required],
+      contenido: ['', [Validators.required, Validators.maxLength(144)]],
     });
   }
 
@@ -46,7 +46,11 @@ export class ComentariosComponent {
 
     this.cargarComentarios();
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['publicacionId']) {
+      console.log('publicacionId actualizado:', this.publicacionId);
+    }
+  }
   cargarComentarios() {
     if (!this.hayMas) return;
 
@@ -57,7 +61,11 @@ export class ComentariosComponent {
         this.limite
       )
       .subscribe((nuevosComentarios) => {
-        this.comentarios = [...this.comentarios, ...nuevosComentarios];
+        const idsExistentes = new Set(this.comentarios.map((c) => c._id));
+        const comentariosFiltrados = nuevosComentarios.filter(
+          (c) => !idsExistentes.has(c._id)
+        );
+        this.comentarios = [...this.comentarios, ...comentariosFiltrados];
 
         if (nuevosComentarios.length < this.limite) {
           this.hayMas = false;
@@ -66,15 +74,20 @@ export class ComentariosComponent {
         }
       });
   }
+  cargarMas() {
+    this.pagina++;
+    this.cargarComentarios();
+  }
 
   agregarComentario() {
+    console.log(this.publicacionId);
     if (this.comentarioForm.invalid || !this.usuarioId) return;
 
     const nuevoComentario = {
       contenido: this.comentarioForm.value.contenido,
-      usuarioId: this.usuarioId,
+      usuarioId: this.usuarioId!,
       publicacionId: this.publicacionId,
-    };
+    } as unknown as ComentarioModel;
 
     this.comentariosService.agregarComentario(nuevoComentario).subscribe(() => {
       this.pagina = 1;

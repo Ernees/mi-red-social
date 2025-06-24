@@ -16,11 +16,14 @@ import {
   Query,
   UseGuards,
   Req,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PublicacionesService } from './publicaciones.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
 import { diskStorage } from 'multer';
+import { isValidObjectId } from 'mongoose';
 import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
 import { existsSync, mkdirSync } from 'fs';
 import { extname } from 'path';
@@ -76,23 +79,32 @@ export class PublicacionesController {
 
     return await this.publicacionesService.create(dtoConImagen);
   }
-
   @Get('/traer')
   async findAll(
-    @Query('orden') orden: 'fecha' | 'likes' = 'fecha',
+    @Query('orden') orden = 'fecha',
     @Query('offset') offset = '0',
     @Query('limit') limit = '10',
+    @Query('filtrarPorUsuario') filtrarPorUsuario: string,
     @Req() req,
   ) {
+    const ordenValida =
+      orden === 'likes' || orden === 'fecha' ? orden : 'fecha';
+
+    const offsetNum = parseInt(offset);
+    const limitNum = parseInt(limit);
+
+    if (isNaN(offsetNum) || isNaN(limitNum)) {
+      throw new BadRequestException('Offset o limit inválido');
+    }
+
     const usuario = req['usuario'];
-    const usuarioId =
-      req.query.filtrarPorUsuario === 'true' ? usuario.sub : undefined;
+    const usuarioId = filtrarPorUsuario === 'true' ? usuario?.sub : undefined;
 
     return this.publicacionesService.findAll({
-      orden,
+      orden: ordenValida,
       usuarioId,
-      offset: parseInt(offset),
-      limit: parseInt(limit),
+      offset: offsetNum,
+      limit: limitNum,
     });
   }
   @UseGuards(AuthGuard)
@@ -105,6 +117,25 @@ export class PublicacionesController {
       offset: 0,
       limit: 3,
     });
+  }
+  @Get('/:id')
+  async obtenerPublicacionPorId(@Param('id') id: string) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('ID inválido');
+    }
+
+    try {
+      const publicacion = await this.publicacionesService.findOne(id);
+      if (!publicacion) {
+        throw new NotFoundException('Publicación no encontrada');
+      }
+      return publicacion;
+    } catch (error) {
+      throw new BadRequestException(
+        'ID inválido o error al buscar publicación',
+        error,
+      );
+    }
   }
 
   @UseGuards(AuthGuard)

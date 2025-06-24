@@ -27,7 +27,11 @@ export class PublicacionesService {
         error: (err) => console.warn('Error al crear publicación:', err.error),
       });
   }
-
+  getPublicacionPorId(id: string): Observable<PublicacionModel> {
+    return this.http.get<PublicacionModel>(
+      `${environment.api_url}publicaciones/${id}`
+    );
+  }
   obtenerPublicaciones(
     orden: 'fecha' | 'likes',
     offset: number,

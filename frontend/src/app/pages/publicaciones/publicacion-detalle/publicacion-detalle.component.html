@@ -1,0 +1,18 @@
+@if (publicacion) {
+<div class="detalle-publicacion">
+  <button class="btn btn-secondary mb-3" (click)="volverAtras()">Volver</button>
+
+  <h2>{{ publicacion.titulo }}</h2>
+  <p>{{ publicacion.descripcion }}</p>
+
+  @if (publicacion.urlImagen) {
+  <img
+    [src]="'http://localhost:3000/imgpublicaciones/' + publicacion.urlImagen"
+    alt="Imagen"
+    class="img-fluid"
+  />
+  }
+
+  <app-comentarios [publicacionId]="publicacion._id"></app-comentarios>
+</div>
+}

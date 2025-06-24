@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PublicacionModel } from '../../../models/publicacion.model';
 import { PublicacionesService } from '../../../services/publicaciones.service';
 import { ComentariosComponent } from '../comentarios/comentarios.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-publicacion-item',
@@ -14,7 +15,13 @@ export class PublicacionItemComponent {
   @Input() mostrarBotonesLike: boolean = true;
   @Output() likeCambiado = new EventEmitter<string>();
 
-  constructor(private publicacionesService: PublicacionesService) {}
+  constructor(
+    private publicacionesService: PublicacionesService,
+    private router: Router
+  ) {}
+  verEnGrande() {
+    this.router.navigate(['/publicacion-item', this.publicacion._id]);
+  }
 
   dioLike(): boolean {
     const token = localStorage.getItem('token');

@@ -76,7 +76,7 @@ export class PublicacionesService {
     }
 
     return {
-      id: publicacion._id,
+      _id: publicacion._id,
       titulo: publicacion.titulo,
       descripcion: publicacion.descripcion,
       urlImagen: publicacion.urlImagen,

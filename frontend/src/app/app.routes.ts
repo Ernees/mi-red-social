@@ -43,18 +43,25 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: '',
+    path: 'publicacion-item/:id',
     loadComponent: () =>
-      import('./pages/bienvenida/bienvenida.component').then(
-        (modulo) => modulo.BienvenidaComponent
-      ),
-    pathMatch: 'full',
+      import(
+        './pages/publicaciones/publicacion-detalle/publicacion-detalle.component'
+      ).then((modulo) => modulo.PublicacionDetalleComponent),
   },
-  {
-    path: '**',
-    loadComponent: () =>
-      import('./pages/bienvenida/bienvenida.component').then(
-        (modulo) => modulo.BienvenidaComponent
-      ),
-  },
+  // {
+  //   path: '',
+  //   loadComponent: () =>
+  //     import('./pages/bienvenida/bienvenida.component').then(
+  //       (modulo) => modulo.BienvenidaComponent
+  //     ),
+  //   pathMatch: 'full',
+  // },
+  // {
+  //   path: '**',
+  //   loadComponent: () =>
+  //     import('./pages/bienvenida/bienvenida.component').then(
+  //       (modulo) => modulo.BienvenidaComponent
+  //     ),
+  // },
 ];

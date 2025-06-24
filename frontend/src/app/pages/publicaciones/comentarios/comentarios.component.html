@@ -1,26 +1,45 @@
-<div class="comentario-container">
+@if (comentarios.length > 0) {
+<div class="comentarios-listado">
+  <h4 class="mb-3">Comentarios</h4>
+
+  @for (comentario of comentarios; track $index) {
+  <div class="comentario">
+    <strong>{{ comentario.usuarioId.nombre }}</strong
+    >: {{ comentario.contenido }}
+  </div>
+  } @if (hayMas) {
+  <div class="d-flex justify-content-center mt-3">
+    <button
+      (click)="cargarMas()"
+      [disabled]="!hayMas"
+      class="btn btn-secondary mt-2"
+    >
+      Cargar más
+    </button>
+  </div>
+  }
+</div>
+} @else {
+<p class="text-muted mt-3">
+  Todavía no hay comentarios. ¡Sé el primero en comentar!
+</p>
+}
+
+<div class="comentario-container mt-4">
   <form [formGroup]="comentarioForm">
     <div class="form-group">
       <textarea
-        id="contenido"
         formControlName="contenido"
-        placeholder="Escribí tu comentario aca..."
+        placeholder="Escribí tu comentario acá..."
       ></textarea>
-      @if (comentarioForm.get('contenido')?.errors !== null &&
-      comentarioForm.get('contenido')?.touched) {
-      <div class="text-danger">
+
+      @if ( comentarioForm.get('contenido')?.touched &&
+      comentarioForm.get('contenido')?.invalid ) {
+      <div class="text-danger mt-1">
         @if (comentarioForm.get('contenido')?.errors?.['minlength']) {
-        <p>
-          El comentario debe tener al menos
-          {{ comentarioForm.get('contenido')?.errors?.['minlength']?.requiredLength }}
-          caracteres.
-        </p>
+        <p>El comentario es muy corto.</p>
         } @if (comentarioForm.get('contenido')?.errors?.['maxlength']) {
-        <p>
-          El comentario no puede exceder los
-          {{ comentarioForm.get('contenido')?.errors?.['maxlength']?.requiredLength }}
-          caracteres.
-        </p>
+        <p>El comentario es muy largo.</p>
         }
       </div>
       }
@@ -28,8 +47,9 @@
 
     <button
       type="submit"
-      [disabled]="comentarioForm.invalid"
+      class="btn btn-primary w-100"
       (click)="agregarComentario()"
+      [disabled]="comentarioForm.invalid"
     >
       Comentar
     </button>
