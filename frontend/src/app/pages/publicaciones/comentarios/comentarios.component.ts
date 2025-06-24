@@ -42,7 +42,6 @@ export class ComentariosComponent {
     if (token) {
       const datos = this.authService.getDatosToken(token);
       this.usuarioId = datos?.sub ?? null;
-      console.log('usuarioId desde token:', typeof this.usuarioId);
     }
 
     this.cargarComentarios();

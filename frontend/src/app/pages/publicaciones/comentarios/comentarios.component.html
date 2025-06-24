@@ -1,13 +1,37 @@
-<form [formGroup]="comentarioForm">
-  <textarea
-    formControlName="contenido"
-    placeholder="Agregá un comentario..."
-  ></textarea>
-  <button
-    type="button"
-    [disabled]="comentarioForm.invalid"
-    (click)="agregarComentario()"
-  >
-    Comentar
-  </button>
-</form>
+<div class="comentario-container">
+  <form [formGroup]="comentarioForm">
+    <div class="form-group">
+      <textarea
+        id="contenido"
+        formControlName="contenido"
+        placeholder="Escribí tu comentario aca..."
+      ></textarea>
+      @if (comentarioForm.get('contenido')?.errors !== null &&
+      comentarioForm.get('contenido')?.touched) {
+      <div class="text-danger">
+        @if (comentarioForm.get('contenido')?.errors?.['minlength']) {
+        <p>
+          El comentario debe tener al menos
+          {{ comentarioForm.get('contenido')?.errors?.['minlength']?.requiredLength }}
+          caracteres.
+        </p>
+        } @if (comentarioForm.get('contenido')?.errors?.['maxlength']) {
+        <p>
+          El comentario no puede exceder los
+          {{ comentarioForm.get('contenido')?.errors?.['maxlength']?.requiredLength }}
+          caracteres.
+        </p>
+        }
+      </div>
+      }
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="comentarioForm.invalid"
+      (click)="agregarComentario()"
+    >
+      Comentar
+    </button>
+  </form>
+</div>

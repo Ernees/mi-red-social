@@ -1,0 +1,94 @@
+/* Estilos para el contenedor del formulario de comentarios */
+.comentario-container {
+  max-width: 600px; /* Puedes ajustar el ancho si lo deseas */
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  background-color: #3a3a3a; /* Fondo gris oscuro */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+}
+
+.comentario-container h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #f5f5f5;
+  font-weight: 700;
+  font-size: 1.6rem; /* Un poco más pequeño que el h2 del login */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Reutilizando estilos existentes para grupos de formulario */
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #d0d0d0;
+}
+
+/* Reutilizando estilos existentes para textarea (ya cubre input y textarea) */
+.form-group textarea {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #2e2e2e;
+  color: #e0e0e0;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  font-family: inherit;
+  resize: vertical; /* Permite redimensionar verticalmente */
+  min-height: 100px; /* Altura mínima para el textarea de comentario */
+}
+
+.form-group textarea::placeholder {
+  color: #999999;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  background-color: #3a3a3a;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+}
+
+/* Reutilizando estilos existentes para el botón de submit */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1.1rem;
+  background-color: #2e2e2e;
+  color: #dcdcdc;
+  border: 1px solid #4a90e2;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-family: inherit;
+}
+
+button[type="submit"]:hover {
+  background-color: #4a90e2;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(74, 144, 226, 0.8);
+}
+
+button[type="submit"]:disabled {
+  background-color: #3e3e3e;
+  border-color: #6a6a6a;
+  color: #9a9a9a;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Reutilizando estilo para mensajes de error */
+.text-danger {
+  color: #ff5f5f;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+}
