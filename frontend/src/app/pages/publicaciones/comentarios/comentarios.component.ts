@@ -46,11 +46,7 @@ export class ComentariosComponent {
 
     this.cargarComentarios();
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['publicacionId']) {
-      console.log('publicacionId actualizado:', this.publicacionId);
-    }
-  }
+
   cargarComentarios() {
     if (!this.hayMas) return;
 
@@ -75,12 +71,10 @@ export class ComentariosComponent {
       });
   }
   cargarMas() {
-    this.pagina++;
     this.cargarComentarios();
   }
 
   agregarComentario() {
-    console.log(this.publicacionId);
     if (this.comentarioForm.invalid || !this.usuarioId) return;
 
     const nuevoComentario = {

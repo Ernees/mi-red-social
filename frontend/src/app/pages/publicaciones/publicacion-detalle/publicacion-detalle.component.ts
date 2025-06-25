@@ -26,7 +26,6 @@ export class PublicacionDetalleComponent {
       this.publicacionesService.getPublicacionPorId(id).subscribe({
         next: (data) => {
           this.publicacion = data;
-          console.log('Publicación recibida:', this.publicacion);
         },
         error: (err) => console.error('Error al obtener publicación:', err),
       });

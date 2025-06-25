@@ -20,7 +20,6 @@ export class ComentariosService {
   async create(
     createComentarioDto: CreateComentarioDto,
   ): Promise<ComentarioDocument> {
-    console.log('UsuarioId recibido:', createComentarioDto.usuarioId);
     const comentario = new this.comentarioModel({
       ...createComentarioDto,
       usuarioId: new Types.ObjectId(createComentarioDto.usuarioId),

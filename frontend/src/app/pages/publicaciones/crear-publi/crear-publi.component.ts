@@ -37,6 +37,7 @@ export class CrearPubliComponent {
       }),
     });
   }
+
   cargaDeImagen(event: any) {
     if (event.target && event.target.files.length > 0) {
       const archivo = event.target.files[0];
@@ -47,7 +48,6 @@ export class CrearPubliComponent {
   altaPublicacion() {
     if (this.imagen) {
       if (this.formulario.invalid) {
-        console.log('Formulario inválido');
         return;
       }
 
@@ -58,7 +58,6 @@ export class CrearPubliComponent {
       formData.append('titulo', datos.titulo);
       formData.append('descripcion', datos.descripcion);
       formData.append('imagen', this.imagen, this.imagen.name);
-      console.log(formData);
 
       this.pubService.crearPubli(formData);
     }

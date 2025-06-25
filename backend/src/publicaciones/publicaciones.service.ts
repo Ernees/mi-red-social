@@ -102,7 +102,7 @@ export class PublicacionesService {
     }
 
     publicacion.activa = false;
-    return await publicacion.save(); // baja logica
+    return await publicacion.save();
   }
 
   async darLike(

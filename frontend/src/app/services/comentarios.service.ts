@@ -20,7 +20,7 @@ export class ComentariosService {
       .set('limit', limit.toString());
 
     return this.http.get<ComentarioModel[]>(
-      `${environment.api_url}comentarios/publicacion/${publicacionId}?page=1&limit=5`,
+      `${environment.api_url}comentarios/publicacion/${publicacionId}?page=${page}&limit=${limit}`,
       { params }
     );
   }

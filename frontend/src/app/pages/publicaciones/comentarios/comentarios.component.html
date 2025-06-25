@@ -2,12 +2,16 @@
 <div class="comentarios-listado">
   <h4 class="mb-3">Comentarios</h4>
 
-  @for (comentario of comentarios; track $index) {
-  <div class="comentario">
-    <strong>{{ comentario.usuarioId.nombre }}</strong
-    >: {{ comentario.contenido }}
+  <div class="comentarios-scroll">
+    @for (comentario of comentarios; track $index) {
+    <div class="comentario">
+      <strong>{{ comentario.usuarioId.nombre }}</strong
+      >: {{ comentario.contenido }}
+    </div>
+    }
   </div>
-  } @if (hayMas) {
+
+  @if (hayMas) {
   <div class="d-flex justify-content-center mt-3">
     <button
       (click)="cargarMas()"
@@ -21,7 +25,7 @@
 </div>
 } @else {
 <p class="text-muted mt-3">
-  Todavía no hay comentarios. ¡Sé el primero en comentar!
+  Todavía no hay comentarios. Sé el primero en comentar!
 </p>
 }
 
@@ -36,9 +40,7 @@
       @if ( comentarioForm.get('contenido')?.touched &&
       comentarioForm.get('contenido')?.invalid ) {
       <div class="text-danger mt-1">
-        @if (comentarioForm.get('contenido')?.errors?.['minlength']) {
-        <p>El comentario es muy corto.</p>
-        } @if (comentarioForm.get('contenido')?.errors?.['maxlength']) {
+        @if (comentarioForm.get('contenido')?.errors?.['maxlength']) {
         <p>El comentario es muy largo.</p>
         }
       </div>

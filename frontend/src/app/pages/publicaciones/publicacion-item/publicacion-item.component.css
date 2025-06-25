@@ -1,7 +1,7 @@
 .publicacion-card {
   width: 100%;
-  background-color: #3a3a3a; /* gris oscuro para fondo */
-  border: 1px solid #4a4a4a; /* borde gris medio */
+  background-color: #3a3a3a;
+  border: 1px solid #4a4a4a;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   margin-bottom: 2rem;
@@ -14,7 +14,7 @@
 
 .publicacion-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.6); /* sombra azulada */
+  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.6);
 }
 
 .publicacion-card h3 {
@@ -31,7 +31,6 @@
   line-height: 1.4;
 }
 
-/* Contenedor de la imagen */
 .image-wrapper {
   width: 100%;
   height: 250px;
@@ -39,7 +38,7 @@
   overflow: hidden;
   margin-bottom: 1rem;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-  background-color: #2e2e2e; /* para que no quede blanco */
+  background-color: #2e2e2e;
 }
 
 .image-wrapper img {
@@ -54,14 +53,12 @@
   transform: scale(1.05);
 }
 
-/* Botones en la card */
 .botones {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-/* Si querés, podés aplicar aquí un estilo a los botones para que combinen con el navbar */
 .botones button {
   background-color: #2e2e2e;
   border: 1px solid #4a90e2;

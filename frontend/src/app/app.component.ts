@@ -11,9 +11,6 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
   title = 'frontend';
-  apiService = inject(ApiService);
-  ngOnInit() {
-    this.apiService.traer();
-  }
+
   constructor(public authService: AuthService) {}
 }

@@ -13,6 +13,5 @@ export const logeadoGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
-  console.log('te dejo apsar');
   return true;
 };
