@@ -98,12 +98,15 @@ export class AuthService {
       );
   }
   iniciarTemporizador() {
+    console.log(this.timerId);
     if (this.timerId) {
       clearTimeout(this.timerId);
     }
+    console.log(this.timerId);
     this.timerId = setTimeout(() => {
       this.mostrarModalExtenderSesion();
-    }, 10 * 60 * 1000);
+    }, 1 * 60 * 1000);
+    console.log(this.timerId);
   }
 
   mostrarModalExtenderSesion() {
@@ -118,24 +121,22 @@ export class AuthService {
   refrescarToken() {
     const token = this.obtenerToken();
     if (!token) {
-      // No token, no se refresca
       return;
     }
 
     this.httpClient
       .post<{ token: string }>(
-        environment.api_url + '/autenticacion/refrescar-token',
+        environment.api_url + 'autenticacion/refrescar-token',
         {},
         { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) }
       )
       .subscribe({
         next: (res) => {
           localStorage.setItem('token', res.token);
-          this.iniciarTemporizador(); // Reiniciar el temporizador
+          this.iniciarTemporizador();
         },
         error: (err) => {
           console.error('No se pudo refrescar token', err);
-          // Podrías forzar logout o mostrar mensaje
         },
       });
   }
