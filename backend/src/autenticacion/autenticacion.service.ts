@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
@@ -78,7 +79,8 @@ export class AutenticacionService {
       throw new UnauthorizedException(`Token inválido o expirado ${error}`);
     }
   }
-  generarToken(payload: object) {
-    return this.jwtService.sign(payload, { expiresIn: '15m' });
+  generarToken(payload: any) {
+    const { exp, ...payloadSinExp } = payload;
+    return this.jwtService.sign(payloadSinExp, { expiresIn: '15m' });
   }
 }

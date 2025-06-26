@@ -97,6 +97,7 @@ export class AuthService {
         map(() => {})
       );
   }
+
   iniciarTemporizador() {
     console.log(this.timerId);
     if (this.timerId) {
@@ -105,13 +106,13 @@ export class AuthService {
     console.log(this.timerId);
     this.timerId = setTimeout(() => {
       this.mostrarModalExtenderSesion();
-    }, 1 * 60 * 1000);
+    }, 10 * 60 * 1000);
     console.log(this.timerId);
   }
 
   mostrarModalExtenderSesion() {
     const confirmacion = confirm(
-      'Quedan 5 minutos de sesión. ¿Deseás extenderla?'
+      'Quedan 5 minutos de sesión. ¿Desea extenderla?'
     );
     if (confirmacion) {
       this.refrescarToken();
@@ -126,7 +127,7 @@ export class AuthService {
 
     this.httpClient
       .post<{ token: string }>(
-        environment.api_url + 'autenticacion/refrescar-token',
+        environment.api_url + 'autenticacion/refrescar',
         {},
         { headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) }
       )

@@ -81,10 +81,4 @@ export class AutenticacionController {
 
     return { token: nuevoToken };
   }
-  @UseGuards(AuthGuard)
-  @Post('refrescar-token')
-  refrescar(@Req() req) {
-    const nuevoToken = this.authService.generarToken(req.user);
-    return { token: nuevoToken };
-  }
 }
