@@ -14,7 +14,6 @@ export class UsuariosService {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      // Opcional: lanzar error o devolver observable que emita error
       return throwError(() => new Error('No hay token disponible'));
     }
 

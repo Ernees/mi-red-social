@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,10 +20,7 @@ export class LoginComponent {
   mensajeError = signal('');
   cargando = false;
 
-  constructor(
-    private apiService: ApiService,
-    private authService: AuthService
-  ) {
+  constructor(private authService: AuthService) {
     this.formulario = new FormGroup({
       mail: new FormControl<string>('', {
         validators: [
@@ -46,18 +43,14 @@ export class LoginComponent {
   async iniciarSesion() {
     if (!this.formulario.valid) return;
 
-    const mail = this.formulario.value.mail;
-    const password = this.formulario.value.password;
-    const credenciales = { mail, password };
+    const credenciales = this.formulario.value;
 
     this.cargando = true;
     this.mensajeError.set('');
 
     this.authService.iniciarSesion(credenciales).subscribe({
-      next: (respuesta) => {
-        localStorage.setItem('token', respuesta.access_token);
+      next: () => {
         this.formulario.reset();
-        this.authService.router.navigateByUrl('/publicaciones');
         this.cargando = false;
       },
       error: (error) => {

@@ -11,11 +11,13 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AutenticacionService } from './autenticacion.service';
 import { CreateUsuarioDto } from '../usuarios/dto/create-usuario.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { AuthGuard } from 'src/guards/logeado-guard/logeado-guard.guard';
 
 @Controller('autenticacion')
 export class AutenticacionController {
@@ -59,6 +61,7 @@ export class AutenticacionController {
   async login(@Body() body: { mail: string; password: string }) {
     return this.authService.login(body.mail, body.password);
   }
+  @UseGuards(AuthGuard)
   @Post('autorizar')
   autorizar(@Req() req: Request) {
     const header = req.headers['authorization'];
@@ -76,6 +79,12 @@ export class AutenticacionController {
     const payload = this.authService.verificarToken(token);
     const nuevoToken = this.authService.generarToken(payload);
 
+    return { token: nuevoToken };
+  }
+  @UseGuards(AuthGuard)
+  @Post('refrescar-token')
+  refrescar(@Req() req) {
+    const nuevoToken = this.authService.generarToken(req.user);
     return { token: nuevoToken };
   }
 }

@@ -108,11 +108,8 @@ export class RegistroComponent {
       this.mensajeError.set('');
 
       this.authService.registrarse(formData).subscribe({
-        next: (data) => {
-          console.log('Registro exitoso:', data);
-          localStorage.setItem('token', data.access_token);
+        next: () => {
           this.formulario.reset();
-          this.authService.router.navigateByUrl('/publicaciones');
           this.cargando = false;
         },
         error: (error) => {
