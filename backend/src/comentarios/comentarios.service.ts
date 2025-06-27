@@ -59,20 +59,20 @@ export class ComentariosService {
     if (!comentario) {
       throw new NotFoundException('Comentario no encontrado');
     }
-
     if (comentario.usuarioId.toString() !== userId) {
       throw new ForbiddenException(
         'No tienes permiso para editar este comentario',
       );
     }
-
-    return this.comentarioModel.findByIdAndUpdate(
-      id,
-      {
-        ...dto,
-        modificado: true,
-      },
-      { new: true },
-    );
+    return this.comentarioModel
+      .findByIdAndUpdate(
+        id,
+        {
+          ...dto,
+          modificado: true,
+        },
+        { new: true },
+      )
+      .populate('usuarioId');
   }
 }

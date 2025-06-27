@@ -66,7 +66,7 @@ export class ComentariosController {
     @Body() dto: UpdateComentarioDto,
     @Req() req: Request,
   ) {
-    const usuarioId = req['usuario'].id;
+    const usuarioId = req['usuario'].sub;
 
     return this.comentariosService.update(id, dto, usuarioId);
   }

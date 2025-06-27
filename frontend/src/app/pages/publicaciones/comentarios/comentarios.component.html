@@ -3,10 +3,70 @@
   <h4 class="mb-3">Comentarios</h4>
 
   <div class="comentarios-scroll">
-    @for (comentario of comentarios; track $index) {
+    @for (comentario of comentarios; track comentario._id) {
     <div class="comentario">
-      <strong>{{ comentario.usuarioId.nombre }}</strong
-      >: {{ comentario.contenido }}
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <strong>{{ getUsuarioNombre(comentario) }}</strong>
+        @if (esMiComentario(comentario)) {
+        <div>
+          <button
+            class="btn btn-sm btn-link p-0 me-2"
+            (click)="iniciarEdicion(comentario)"
+          >
+            Editar
+          </button>
+        </div>
+        }
+      </div>
+
+      @if (editandoComentarioId === comentario._id) {
+      <form
+        [formGroup]="comentarioEditForm"
+        (ngSubmit)="guardarEdicion(comentario)"
+      >
+        <textarea
+          formControlName="contenidoEditado"
+          class="form-control mb-2"
+          rows="3"
+          placeholder="Edita tu comentario aquí..."
+        ></textarea>
+        @if ( comentarioEditForm.get('contenidoEditado')?.touched &&
+        comentarioEditForm.get('contenidoEditado')?.invalid ) {
+        <div class="text-danger mt-1">
+          @if
+          (comentarioEditForm.get('contenidoEditado')?.errors?.['maxlength']) {
+          <p>El comentario es muy largo (máx. 144 caracteres).</p>
+          } @if
+          (comentarioEditForm.get('contenidoEditado')?.errors?.['required']) {
+          <p>El comentario no puede estar vacío.</p>
+          }
+        </div>
+        }
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm me-2"
+            (click)="cancelarEdicion()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary btn-sm"
+            [disabled]="comentarioEditForm.invalid"
+          >
+            Guardar
+          </button>
+        </div>
+      </form>
+      } @else {
+      <p class="mb-0">
+        {{ comentario.contenido }}
+        @if (comentario.modificado) {
+        <small class="text-muted">(editado)</small>
+        }
+      </p>
+      }
     </div>
     }
   </div>
@@ -30,18 +90,22 @@
 }
 
 <div class="comentario-container mt-4">
-  <form [formGroup]="comentarioForm">
+  <!-- Usa (ngSubmit) en el formulario -->
+  <form [formGroup]="comentarioForm" (ngSubmit)="agregarComentario()">
     <div class="form-group">
       <textarea
         formControlName="contenido"
         placeholder="Escribí tu comentario acá..."
+        class="form-control"
       ></textarea>
 
       @if ( comentarioForm.get('contenido')?.touched &&
       comentarioForm.get('contenido')?.invalid ) {
       <div class="text-danger mt-1">
         @if (comentarioForm.get('contenido')?.errors?.['maxlength']) {
-        <p>El comentario es muy largo.</p>
+        <p>El comentario es muy largo (máx. 144 caracteres).</p>
+        } @if (comentarioForm.get('contenido')?.errors?.['required']) {
+        <p>El comentario no puede estar vacío.</p>
         }
       </div>
       }
@@ -49,8 +113,7 @@
 
     <button
       type="submit"
-      class="btn btn-primary w-100"
-      (click)="agregarComentario()"
+      class="btn btn-primary w-100 mt-2"
       [disabled]="comentarioForm.invalid"
     >
       Comentar

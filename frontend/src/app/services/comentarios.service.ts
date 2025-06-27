@@ -24,7 +24,17 @@ export class ComentariosService {
       { params }
     );
   }
-
+  editarComentario(
+    comentarioId: string,
+    contenido: string
+  ): Observable<ComentarioModel> {
+    return this.http.put<ComentarioModel>(
+      `${environment.api_url}comentarios/${comentarioId}`,
+      {
+        contenido,
+      }
+    );
+  }
   agregarComentario(
     comentario: Partial<ComentarioModel>
   ): Observable<ComentarioModel> {

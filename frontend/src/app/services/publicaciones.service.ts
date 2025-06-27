@@ -17,7 +17,6 @@ export class PublicacionesService {
       ? new HttpHeaders().set('Authorization', `Bearer ${token}`)
       : new HttpHeaders();
 
-    console.log(headers);
     this.http
       .post(environment.api_url + 'publicaciones/alta', dataRegistro, {
         headers,

@@ -33,7 +33,6 @@ export class PublicacionesComponent {
       .obtenerPublicaciones(this.orden, offset, this.limite)
       .subscribe((data) => {
         this.publicaciones = data.publicaciones;
-        console.log('Publicaciones cargadas:', this.publicaciones);
         this.total = data.total;
       });
   }

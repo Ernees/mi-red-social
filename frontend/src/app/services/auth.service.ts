@@ -99,15 +99,12 @@ export class AuthService {
   }
 
   iniciarTemporizador() {
-    console.log(this.timerId);
     if (this.timerId) {
       clearTimeout(this.timerId);
     }
-    console.log(this.timerId);
     this.timerId = setTimeout(() => {
       this.mostrarModalExtenderSesion();
     }, 10 * 60 * 1000);
-    console.log(this.timerId);
   }
 
   mostrarModalExtenderSesion() {
