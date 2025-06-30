@@ -154,13 +154,13 @@ export class PublicacionesController {
 
     return this.publicacionesService.quitarLike(publicacionId, usuarioId);
   }
-
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') idPublicacion: string, @Req() req) {
     const usuario = req['usuario'];
-    const idUsuario = usuario.sub;
-    const esAdmin = usuario.perfil === 'admin';
+    const usuarioId = usuario.sub;
+    const esAdmin = usuario.rol === 'admin';
 
-    return this.publicacionesService.remove(idPublicacion, idUsuario, esAdmin);
+    return this.publicacionesService.remove(idPublicacion, usuarioId, esAdmin);
   }
 }

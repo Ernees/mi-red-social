@@ -92,4 +92,14 @@ export class PublicacionesService {
       { headers }
     );
   }
+  deshabilitarPublicacion(id: string): Observable<any> {
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.delete(`${environment.api_url}publicaciones/${id}`, {
+      headers,
+    });
+  }
 }

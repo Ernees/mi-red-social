@@ -1,13 +1,24 @@
+@if (cargando) {
+<p>Cargando...</p>
+} @else {
 <div class="publicaciones-grid">
   @if (publicaciones.length > 0) { @for (pub of publicaciones; track $index) {
   @if (pub) {
   <app-publicacion-item
     [publicacion]="pub"
     [mostrarBotonesLike]="true"
+    [mostrarBotonBaja]="usuario?.rol === 'admin'"
+    (darDeBaja)="darDeBaja(pub._id)"
     (likeCambiado)="actualizarLikes(pub._id)"
   ></app-publicacion-item>
-  } } }
+  } } } @else {
+  <p>No hay publicaciones disponibles.</p>
+  }
 </div>
+@if (usuario && usuario.rol === 'admin') {
+<button (click)="ir()">Ir a usuarios</button>
+}
+
 <div class="pagination-container">
   <button
     class="pagination-button"
@@ -25,3 +36,4 @@
     Siguiente
   </button>
 </div>
+}

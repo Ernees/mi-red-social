@@ -21,12 +21,15 @@
       <button class="btn btn-outline-primary btn-sm" (click)="toggleLike()">
         {{ dioLike() ? "Quitar Like ❤️" : "Dar Like 🤍" }}
       </button>
+      } @if (mostrarBotonBaja) {
+      <button class="btn btn-danger btn-sm" (click)="eliminar()">
+        Dar de baja
+      </button>
       }
     </div>
+    <p>¿Mostrar botón de baja? {{ mostrarBotonBaja }}</p>
 
     <span>{{ publicacion.likes.length }} Me gusta</span>
-
-    <app-comentarios [publicacionId]="publicacion._id"></app-comentarios>
   </div>
 
   @if (publicacion._id) {

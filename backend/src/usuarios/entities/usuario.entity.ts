@@ -4,7 +4,6 @@ import { HydratedDocument, ObjectId } from 'mongoose';
 
 export type UsuarioDocument = HydratedDocument<Usuario>;
 
-// Schema / Modelo
 @Schema()
 export class Usuario {
   _id?: ObjectId;
@@ -14,8 +13,8 @@ export class Usuario {
 
   @Prop({ required: true, unique: true })
   email: string;
-  @Prop({ required: true })
-  perfil: string;
+  @Prop({ required: true, default: 'admin' })
+  rol: string;
 
   @Prop({ required: true })
   password: string;
@@ -34,5 +33,8 @@ export class Usuario {
 
   @Prop({ required: true })
   foto?: string;
+
+  @Prop({ default: true })
+  activo: boolean;
 }
 export const UsuarioSchema = SchemaFactory.createForClass(Usuario);

@@ -21,14 +21,14 @@ export class CrearPubliComponent {
       titulo: new FormControl<string>('', {
         validators: [
           Validators.minLength(3),
-          Validators.maxLength(15),
+          Validators.maxLength(28),
           Validators.required,
         ],
       }),
       descripcion: new FormControl<string>('', {
         validators: [
           Validators.minLength(3),
-          Validators.maxLength(15),
+          Validators.maxLength(28),
           Validators.required,
         ],
       }),

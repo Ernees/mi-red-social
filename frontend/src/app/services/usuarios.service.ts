@@ -28,4 +28,8 @@ export class UsuariosService {
       }
     );
   }
+
+  registrarUsuario(datos: any) {
+    return this.http.post(environment.api_url + 'usuarios/registro', datos);
+  }
 }

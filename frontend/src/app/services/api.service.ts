@@ -1,19 +1,14 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Jwtpayload } from '../models/jwtpayload';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   constructor(private httpClient: HttpClient) {}
-
-  // GET a usuarios/
-  traer() {
-    this.httpClient.get(environment.api_url + 'usuarios').subscribe((datos) => {
-      console.log(datos, 'datos desde el TRAER');
-    });
-  }
 
   traerPorId(id: number) {
     this.httpClient
@@ -50,6 +45,18 @@ export class ApiService {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.sub || null;
     } catch {
+      return null;
+    }
+  }
+  obtenerUsuario(): Jwtpayload | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      console.log(jwtDecode<Jwtpayload>(token));
+      return jwtDecode<Jwtpayload>(token);
+    } catch (e) {
+      console.error('Error al decodificar el token:', e);
       return null;
     }
   }

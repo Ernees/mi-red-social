@@ -6,14 +6,17 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-publicacion-item',
-  imports: [ComentariosComponent],
+  imports: [],
   templateUrl: './publicacion-item.component.html',
   styleUrl: './publicacion-item.component.css',
 })
 export class PublicacionItemComponent {
-  @Input() publicacion!: PublicacionModel;
-  @Input() mostrarBotonesLike: boolean = true;
+  @Input() publicacion!: any;
+  @Input() mostrarBotonesLike: boolean = false;
+  @Input() mostrarBotonBaja: boolean = false;
+
   @Output() likeCambiado = new EventEmitter<string>();
+  @Output() darDeBaja = new EventEmitter<string>();
 
   constructor(
     private publicacionesService: PublicacionesService,
@@ -29,7 +32,9 @@ export class PublicacionItemComponent {
     const usuarioId = JSON.parse(atob(token.split('.')[1])).sub;
     return this.publicacion.likes.includes(usuarioId);
   }
-
+  eliminar() {
+    this.darDeBaja.emit(this.publicacion._id);
+  }
   toggleLike() {
     const accion = this.dioLike()
       ? this.publicacionesService.quitarLike(this.publicacion._id)

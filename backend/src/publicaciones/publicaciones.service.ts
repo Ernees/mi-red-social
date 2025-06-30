@@ -9,12 +9,15 @@ import { CreatePublicacioneDto } from './dto/create-publicacione.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PipelineStage, Types } from 'mongoose';
 import { PublicacionDocument } from './entities/publicacione.entity';
+import { ComentarioDocument } from 'src/comentarios/entities/comentario.entity';
 
 @Injectable()
 export class PublicacionesService {
   constructor(
     @InjectModel('Publicacion')
     private readonly publicacionModel: Model<PublicacionDocument>,
+    @InjectModel('Comentario')
+    private comentarioModel: Model<ComentarioDocument>,
   ) {}
 
   //AGREGAR USERID Y EN EL MODEL TMB, AUTOR:USERID
@@ -69,10 +72,13 @@ export class PublicacionesService {
     };
   }
   async findOne(publicacionId: string) {
-    const publicacion = await this.publicacionModel.findById(publicacionId);
+    const publicacion = await this.publicacionModel.findOne({
+      _id: publicacionId,
+      activa: true,
+    });
 
     if (!publicacion) {
-      throw new NotFoundException('Publicación no encontrada');
+      throw new NotFoundException('Publicación no encontrada o deshabilitada');
     }
 
     return {
@@ -83,7 +89,6 @@ export class PublicacionesService {
     };
   }
 
-  //validar q sea solo el user q la hizo o un admin
   async remove(publicacionId: string, usuarioId: string, esAdmin: boolean) {
     const publicacion = await this.publicacionModel.findById(publicacionId);
 
@@ -97,12 +102,19 @@ export class PublicacionesService {
 
     if (!esPropietario && !esAdmin) {
       throw new ForbiddenException(
-        'No tenes permiso para eliminar esta publicación',
+        'No tenes permiso para eliminar esta publicacion',
       );
     }
 
     publicacion.activa = false;
-    return await publicacion.save();
+    await publicacion.save();
+
+    await this.comentarioModel.updateMany(
+      { publicacionId: publicacionId },
+      { $set: { activo: false } },
+    );
+
+    return { mensaje: 'Publicación y sus comentarios fueron deshabilitados' };
   }
 
   async darLike(
@@ -143,5 +155,39 @@ export class PublicacionesService {
     await publicacion.save();
 
     return { likesCount: publicacion.likes.length };
+  }
+
+  async contarPublicaciones() {
+    return await this.publicacionModel.countDocuments();
+  }
+
+  async contarPorUsuario() {
+    return await this.publicacionModel.aggregate<{
+      usuario: string;
+      cantidad: number;
+    }>([
+      {
+        $group: {
+          _id: '$usuario',
+          cantidad: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: 'usuarios',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'usuario',
+        },
+      },
+      { $unwind: '$usuario' },
+      {
+        $project: {
+          _id: 0,
+          usuario: '$usuario.nombreUsuario',
+          cantidad: 1,
+        },
+      },
+    ]);
   }
 }

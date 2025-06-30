@@ -1,0 +1,22 @@
+<h3>Registrar nuevo usuario</h3>
+<form [formGroup]="registroForm" (ngSubmit)="registrarUsuario()">
+  <label>
+    Nombre de usuario:
+    <input type="text" formControlName="nombreUsuario" /> </label
+  ><br />
+
+  <label>
+    Contraseña:
+    <input type="password" formControlName="contraseña" /> </label
+  ><br />
+
+  <label>
+    Rol:
+    <select formControlName="rol">
+      <option value="usuario">Usuario</option>
+      <option value="admin">Administrador</option>
+    </select> </label
+  ><br />
+
+  <button type="submit" [disabled]="registroForm.invalid">Registrar</button>
+</form>

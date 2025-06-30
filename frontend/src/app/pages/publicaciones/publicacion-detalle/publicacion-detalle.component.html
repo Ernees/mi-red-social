@@ -11,6 +11,8 @@
     alt="Imagen"
     class="img-fluid"
   />
+  } @if (mostrarBotonBaja) {
+  <button class="btn btn-danger" (click)="darDeBaja()">Dar de baja</button>
   }
 
   <app-comentarios [publicacionId]="publicacion._id"></app-comentarios>

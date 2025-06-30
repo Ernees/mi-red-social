@@ -28,7 +28,6 @@ export class CreateUsuarioDto {
   })
   password: string;
 
-  // Campo opcional si no hacés validación del campo repetido acá
   @IsOptional()
   passwordRepetida?: string;
 

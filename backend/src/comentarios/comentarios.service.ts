@@ -13,7 +13,7 @@ import { UpdateComentarioDto } from './dto/update-comentario.dto';
 @Injectable()
 export class ComentariosService {
   constructor(
-    @InjectModel('comentarios')
+    @InjectModel('Comentario')
     private comentarioModel: Model<Comentario>,
   ) {}
 
@@ -46,13 +46,14 @@ export class ComentariosService {
     const skip = (page - 1) * limit;
 
     return this.comentarioModel
-      .find({ publicacionId })
+      .find({ publicacionId, activo: true })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .populate('usuarioId', 'nombre')
       .exec();
   }
+
   async update(id: string, dto: UpdateComentarioDto, userId: string) {
     const comentario = await this.comentarioModel.findById(id);
 

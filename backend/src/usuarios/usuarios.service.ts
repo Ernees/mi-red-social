@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -30,8 +32,8 @@ export class UsuariosService {
   }
 
   //------------------------------------------------------------------------------
-  async findAll(): Promise<Partial<Usuario>[]> {
-    return this.usuarioModel.find({}, { nombre: 1, apellido: 1 }).exec();
+  async findAll(): Promise<Usuario[]> {
+    return this.usuarioModel.find({ activo: true });
   }
   //------------------------------------------------------------------------------
 
@@ -41,5 +43,12 @@ export class UsuariosService {
   }
   async buscarPorId(id: string): Promise<Usuario | null> {
     return this.usuarioModel.findById(id).lean().exec();
+  }
+  async bajaLogica(id: string) {
+    return this.usuarioModel.findByIdAndUpdate(id, { activo: false });
+  }
+
+  async altaLogica(id: string) {
+    return this.usuarioModel.findByIdAndUpdate(id, { activo: true });
   }
 }

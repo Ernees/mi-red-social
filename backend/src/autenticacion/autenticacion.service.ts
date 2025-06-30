@@ -30,7 +30,7 @@ export class AutenticacionService {
     const payload = {
       sub: user._id,
       username: user.nombreUsuario,
-      perfil: user.perfil,
+      rol: user.rol,
     };
     const token = await this.jwtService.signAsync(payload);
     return { user, token };
@@ -47,6 +47,10 @@ export class AutenticacionService {
       throw new UnauthorizedException('Usuario no encontrado');
     }
 
+    if (user.activo === false) {
+      throw new UnauthorizedException('Tu cuenta esta deshabilitada');
+    }
+
     if (!user.password) {
       throw new UnauthorizedException('Usuario sin contraseña');
     }
@@ -59,13 +63,14 @@ export class AutenticacionService {
     const payload = {
       sub: user._id,
       username: user.nombreUsuario,
-      perfil: user.perfil,
+      rol: user.rol,
     };
+
     return {
       access_token: await this.jwtService.signAsync(payload),
-      //agregar user? como en registro
     };
   }
+
   verificarToken(token: string) {
     if (!token) {
       //UnauthorizedException es error 401

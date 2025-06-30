@@ -50,6 +50,13 @@ export const routes: Routes = [
       ).then((modulo) => modulo.PublicacionDetalleComponent),
   },
   {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./pages/dashboard/usuarios/usuarios.component').then(
+        (modulo) => modulo.UsuariosComponent
+      ),
+  },
+  {
     path: '',
     loadComponent: () =>
       import('./pages/bienvenida/bienvenida.component').then(

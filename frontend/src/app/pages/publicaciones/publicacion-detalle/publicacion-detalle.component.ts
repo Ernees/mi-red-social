@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PublicacionModel } from '../../../models/publicacion.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { PublicacionesService } from '../../../services/publicaciones.service';
 import { ComentariosComponent } from '../comentarios/comentarios.component';
@@ -13,11 +13,13 @@ import { ComentariosComponent } from '../comentarios/comentarios.component';
 })
 export class PublicacionDetalleComponent {
   publicacion!: PublicacionModel;
+  @Input() mostrarBotonBaja: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private publicacionesService: PublicacionesService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -35,5 +37,13 @@ export class PublicacionDetalleComponent {
   }
   volverAtras() {
     this.location.back();
+  }
+  darDeBaja() {
+    this.publicacionesService
+      .deshabilitarPublicacion(this.publicacion._id)
+      .subscribe(() => {
+        alert('Publicación deshabilitada');
+        this.router.navigate(['/publicaciones']);
+      });
   }
 }

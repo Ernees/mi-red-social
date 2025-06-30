@@ -16,6 +16,8 @@ export class PublicacionesComponent {
   pagina: number = 1;
   limite: number = 3;
   total: number = 0;
+  usuario: any;
+  cargando = true;
   publicaciones: PublicacionModel[] = [];
 
   constructor(
@@ -24,6 +26,8 @@ export class PublicacionesComponent {
     private apiService: ApiService
   ) {}
   ngOnInit() {
+    this.usuario = this.apiService.obtenerUsuario();
+    console.log(this.usuario?.rol);
     this.cargarPublicaciones();
   }
 
@@ -35,6 +39,7 @@ export class PublicacionesComponent {
         this.publicaciones = data.publicaciones;
         this.total = data.total;
       });
+    this.cargando = false;
   }
   crearPublicacion() {
     this.router.navigate(['/publicaciones/crear']);
@@ -70,5 +75,14 @@ export class PublicacionesComponent {
     } else {
       pub.likes.splice(index, 1);
     }
+  }
+  darDeBaja(id: string) {
+    this.pubService.deshabilitarPublicacion(id).subscribe(() => {
+      alert('Publicación deshabilitada');
+      this.cargarPublicaciones();
+    });
+  }
+  ir() {
+    this.router.navigate(['dashboard']);
   }
 }
