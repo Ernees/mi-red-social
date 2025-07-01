@@ -19,6 +19,7 @@ export class LoginComponent {
   formulario: FormGroup;
   mensajeError = signal('');
   cargando = false;
+  cuentaDeshabilitada = false;
 
   constructor(private authService: AuthService) {
     this.formulario = new FormGroup({
@@ -47,6 +48,7 @@ export class LoginComponent {
 
     this.cargando = true;
     this.mensajeError.set('');
+    this.cuentaDeshabilitada = false;
 
     this.authService.iniciarSesion(credenciales).subscribe({
       next: () => {
@@ -55,12 +57,22 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Error al logearse:', error);
-        this.mensajeError.set('Correo o contraseña incorrectos.');
+
+        const mensaje = error?.error?.message;
+
+        if (mensaje === 'Tu cuenta esta deshabilitada') {
+          this.cuentaDeshabilitada = true;
+        } else {
+          this.mensajeError.set('Correo o contraseña incorrectos.');
+        }
+
         this.cargando = false;
       },
     });
   }
-
+  cerrarModal() {
+    this.cuentaDeshabilitada = false;
+  }
   get mail() {
     return this.formulario.get('mail');
   }

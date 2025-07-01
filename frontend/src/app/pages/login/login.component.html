@@ -73,6 +73,17 @@
     <p class="text-danger">
       Email o password incorrectos, por favor intente de nuevo
     </p>
+    } @if (cuentaDeshabilitada) {
+    <div class="modal">
+      <div class="modal-contenido">
+        <h3>Cuenta deshabilitada</h3>
+        <p>
+          Tu cuenta se encuentra deshabilitada. Por favor, contactá con un
+          administrador.
+        </p>
+        <button (click)="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
     }
   </form>
 </div>

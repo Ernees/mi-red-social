@@ -24,7 +24,6 @@ export class UsuariosService {
     const usuarioConPasswordHasheado = {
       ...crearUsuarioDto,
       password: hash,
-      perfil: 'usuario',
     };
 
     const usuario = new this.usuarioModel(usuarioConPasswordHasheado);
@@ -33,7 +32,7 @@ export class UsuariosService {
 
   //------------------------------------------------------------------------------
   async findAll(): Promise<Usuario[]> {
-    return this.usuarioModel.find({ activo: true });
+    return this.usuarioModel.find();
   }
   //------------------------------------------------------------------------------
 

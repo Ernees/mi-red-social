@@ -97,6 +97,19 @@ export class AuthService {
         map(() => {})
       );
   }
+  registrar(dataRegistro: FormData): Observable<void> {
+    return this.httpClient
+      .post<{ access_token: string }>(
+        environment.api_url + 'autenticacion/registro',
+        dataRegistro
+      )
+      .pipe(
+        tap(() => {
+          console.log('Usuario registrado con éxito.');
+        }),
+        map(() => {})
+      );
+  }
 
   iniciarTemporizador() {
     if (this.timerId) {

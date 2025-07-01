@@ -1,0 +1,129 @@
+.registro-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  background-color: #3a3a3a; /* gris oscuro */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+}
+
+.registro-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #f5f5f5;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #d0d0d0;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #2e2e2e; /* gris navbar */
+  color: #e0e0e0;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  font-family: inherit;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999999;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  background-color: #3a3a3a;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.7);
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1.1rem;
+  background-color: #2e2e2e;
+  color: #dcdcdc;
+  border: 1px solid #4a90e2;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-family: inherit;
+}
+
+button[type="submit"]:hover {
+  background-color: #4a90e2;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(74, 144, 226, 0.8);
+}
+.text-danger {
+  color: #ff5f5f;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  background-color: #2c2c2c;
+  color: #f0f0f0;
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+li strong {
+  color: #00bcd4;
+  font-weight: bold;
+}
+
+.usuario-info {
+  flex-grow: 1;
+}
+
+button {
+  background-color: #009688;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: #00796b;
+}
+
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}

@@ -30,6 +30,36 @@ export class UsuariosService {
   }
 
   registrarUsuario(datos: any) {
-    return this.http.post(environment.api_url + 'usuarios/registro', datos);
+    return this.http.post(environment.api_url + 'admin/users', datos);
+  }
+  getUsuarios(): Observable<UsuarioModel[]> {
+    const headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + localStorage.getItem('token')
+    );
+    return this.http.get<UsuarioModel[]>(environment.api_url + 'admin/users', {
+      headers,
+    });
+  }
+  darDeBaja(id: string) {
+    return this.http.delete(environment.api_url + 'admin/users/' + id, {
+      headers: new HttpHeaders().set(
+        'Authorization',
+        'Bearer ' + localStorage.getItem('token')
+      ),
+    });
+  }
+
+  darDeAlta(id: string) {
+    return this.http.post(
+      environment.api_url + 'admin/users/' + id + '/alta',
+      {},
+      {
+        headers: new HttpHeaders().set(
+          'Authorization',
+          'Bearer ' + localStorage.getItem('token')
+        ),
+      }
+    );
   }
 }

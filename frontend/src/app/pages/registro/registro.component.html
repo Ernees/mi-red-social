@@ -1,7 +1,6 @@
 <div class="registro-container">
   <h2>Registro</h2>
   <form [formGroup]="formulario" class="needs-validation" novalidate>
-    <!-- NOMBRE -->
     <div class="form-group">
       <label for="nombre">Nombre</label>
       <input
@@ -23,7 +22,6 @@
       }
     </div>
 
-    <!-- APELLIDO -->
     <div class="form-group">
       <label for="apellido">Apellido</label>
       <input
@@ -69,7 +67,6 @@
       }
     </div>
 
-    <!-- NOMBRE DE USUARIO -->
     <div class="form-group">
       <label for="nombreUsuario">Nombre de usuario</label>
       <input
@@ -91,7 +88,6 @@
       }
     </div>
 
-    <!-- FECHA DE NACIMIENTO -->
     <div class="form-group">
       <label for="fNac">Fecha de nacimiento</label>
       <input
@@ -110,7 +106,6 @@
       }
     </div>
 
-    <!-- DESCRIPCIÓN -->
     <div class="form-group">
       <label for="descripcion">Descripción</label>
       <textarea
@@ -130,7 +125,6 @@
       }
     </div>
 
-    <!-- CONTRASEÑA -->
     <div class="form-group">
       <label for="password">Contraseña</label>
       <input
@@ -152,7 +146,6 @@
       }
     </div>
 
-    <!-- REPETIR CONTRASEÑA -->
     <div class="form-group">
       <label for="passwordRepetida">Repetir contraseña</label>
       <input
@@ -176,7 +169,6 @@
       }
     </div>
 
-    <!-- FOTO -->
     <div class="form-group">
       <label for="foto">Foto de perfil</label>
       <input
@@ -195,7 +187,6 @@
       }
     </div>
 
-    <!-- BOTÓN -->
     <button
       type="submit"
       (click)="registrarse()"

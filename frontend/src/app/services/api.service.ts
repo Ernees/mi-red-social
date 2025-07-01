@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Jwtpayload } from '../models/jwtpayload';
 import { jwtDecode } from 'jwt-decode';
 
@@ -24,14 +24,6 @@ export class ApiService {
         clave: 'Valor',
         nombre: 'apellido',
       })
-      .subscribe((data) => {
-        console.log(data);
-      });
-  }
-
-  eliminar(id: number) {
-    this.httpClient
-      .delete(environment.api_url + 'usuarios/' + id)
       .subscribe((data) => {
         console.log(data);
       });

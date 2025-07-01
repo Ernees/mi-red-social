@@ -9,4 +9,6 @@ export interface UsuarioModel {
   fNac: string;
   descripcion?: string;
   foto?: string;
+  activo: boolean;
+  rol: string;
 }
