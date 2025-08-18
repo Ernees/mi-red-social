@@ -12,8 +12,6 @@ Permite a los usuarios registrarse, iniciar sesión, crear publicaciones y conec
 - 📝 **Publicaciones** — Creación, edición y eliminación de posts.
 - ❤️ **Interacciones** — Dar "me gusta" a publicaciones de otros usuarios.
 - 🔒 **Protección de Rutas** — Middlewares personalizados para controlar el acceso.
-- 📱 **Interfaz Responsiva** — Frontend en Angular optimizado para distintos dispositivos.
-
 ---
 
 ## 🛠️ Tecnologías Utilizadas
@@ -30,9 +28,7 @@ Permite a los usuarios registrarse, iniciar sesión, crear publicaciones y conec
 
 **Herramientas:**
 - Git & GitHub  
-- Postman (testeo de APIs)  
-- Docker (configuración básica para el backend)
-
+- Postman (testeo de APIs) 
 ---
 
 ## 🚀 Instalación y Uso Local
